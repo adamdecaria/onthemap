@@ -17,6 +17,9 @@ class UdacityClient : NSObject {
     // shared URL session
     let session = URLSession.shared
     
+    // session ID from Udacity API
+    var sessionID = ""
+    
     // login information submitted by user
     var userEmail: String = ""
     var userPassword: String = ""
@@ -48,16 +51,20 @@ class UdacityClient : NSObject {
                 print("There was an error getting a session.")
                 return
             }
-            
-            let range = Range(uncheckedBounds: (5, data!.count - 5))
-            let newData = data?.subdata(in: range) /* subset response data! */
-            print(NSString(data: newData!, encoding: String.Encoding.utf8.rawValue)!)
+
+            let range = Range(uncheckedBounds: (5, data!.count))
+            let scrubbedData = data?.subdata(in: range)
+
+            print(NSString(data: scrubbedData!, encoding: String.Encoding.utf8.rawValue)!)
 
             let parsedResult : [String:AnyObject]!
             
             do {
-                parsedResult = try JSONSerialization.jsonObject(with: data!, options: .allowFragments) as! [String:AnyObject]
-                print(parsedResult)
+                parsedResult = try JSONSerialization.jsonObject(with: scrubbedData!, options: .allowFragments) as! [String:AnyObject]
+                let sessionDictionary = parsedResult["session"]
+                self.sessionID = sessionDictionary?["id"] as! String
+                print(self.sessionID)
+            
             } catch {
                 print("Error with the JSON data")
             }
