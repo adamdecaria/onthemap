@@ -45,8 +45,11 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         
         if emailTextField.hasText && passwordTextField.hasText {
             client.getLoginInfo(username: emailTextField.text!, password: passwordTextField.text!)
-            print(client.userEmail!)
-            print(client.userPassword!)
+            print(client.userEmail)
+            print(client.userPassword)
+            
+        let _ = client.taskForPOSTSession()
+            
         } else {
             
             let errorMessage = UIAlertController.init(title: "Forgot Something...", message: "Please enter both an email and password.", preferredStyle: .alert)
