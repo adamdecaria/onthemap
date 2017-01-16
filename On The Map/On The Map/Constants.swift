@@ -22,7 +22,6 @@ extension UdacityClient {
     // MARK: methods from the Udacity Web API
     struct Methods {
         static let session = "session"
-        static let deleteSession = "session/DELETE"
     }
     
 } // End Constants

@@ -74,11 +74,11 @@ class UdacityClient : NSObject {
         
     } // End taskForPOSTSession
     
-    func taskForPOSTDeleteSession(methodType: String) {
+    func taskForPOSTDeleteSession() {
         
         var xsrfCookie: HTTPCookie? = nil
         
-        let request = NSMutableURLRequest(url: URL(string: "https://www.udacity.com/session")!)
+        let request = NSMutableURLRequest(url: URL(string: Constants.webAddress + Methods.session)!)
         request.httpMethod = "DELETE"
         request.addValue(Constants.jsonOK, forHTTPHeaderField: "Accept")
         request.addValue(Constants.jsonOK, forHTTPHeaderField: "Content-Type")

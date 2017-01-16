@@ -13,7 +13,7 @@ class MapViewController : UIViewController {
     @IBAction func logoutButtonPressed(_ sender: Any) {
        
         print("LOGOUT button pressed")
-        let _ = UdacityClient.sharedInstance().taskForPOSTDeleteSession(methodType: UdacityClient.Methods.deleteSession)
+        let _ = UdacityClient.sharedInstance().taskForPOSTDeleteSession()
         self.dismiss(animated: true, completion: nil)
     }
 
