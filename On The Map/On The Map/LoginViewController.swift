@@ -15,8 +15,6 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     
     // textField for password entry to login
     @IBOutlet weak var passwordTextField: UITextField!
-    
-    let client = UdacityClient()
    
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -44,11 +42,11 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         print("Login button pressed.")
         
         if emailTextField.hasText && passwordTextField.hasText {
-            client.getLoginInfo(username: emailTextField.text!, password: passwordTextField.text!)
-            print(client.userEmail)
-            print(client.userPassword)
+            UdacityClient.sharedInstance().getLoginInfo(username: emailTextField.text!, password: passwordTextField.text!)
+            print(UdacityClient.sharedInstance().userEmail)
+            print(UdacityClient.sharedInstance().userPassword)
             
-        let _ = client.taskForPOSTSession()
+            let _ = UdacityClient.sharedInstance().taskForPOSTSession(methodType: UdacityClient.Methods.session)
             
         } else {
             
@@ -60,7 +58,11 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
             
             self.present(errorMessage, animated: true)
         }
+        
+        let mapViewController = (storyboard?.instantiateViewController(withIdentifier: "MapViewController"))! as UIViewController
+        self.present(mapViewController, animated: true, completion: nil)
+        
     } // End loginButtonPressed
     
-}
+} // End LoginViewController
 

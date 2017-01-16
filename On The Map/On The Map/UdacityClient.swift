@@ -34,9 +34,9 @@ class UdacityClient : NSObject {
         userPassword = password
     }
     
-    func taskForPOSTSession() {
+    func taskForPOSTSession(methodType: String) {
         
-        let request = NSMutableURLRequest(url: URL(string: (Constants.webAddress + Methods.session))!)
+        let request = NSMutableURLRequest(url: URL(string: (Constants.webAddress + methodType))!)
         
         request.httpMethod = "POST"
         request.addValue(Constants.jsonOK, forHTTPHeaderField: "Accept")
@@ -72,6 +72,67 @@ class UdacityClient : NSObject {
         }
         task.resume()
         
-    }
+    } // End taskForPOSTSession
+    
+    func taskForPOSTDeleteSession(methodType: String) {
+        
+        var xsrfCookie: HTTPCookie? = nil
+        
+        let request = NSMutableURLRequest(url: URL(string: "https://www.udacity.com/session")!)
+        request.httpMethod = "DELETE"
+        
+        // remove any cookies associated with Udacity API granted session
+        let sharedCookieStorage = HTTPCookieStorage.shared
+        
+        for cookie in sharedCookieStorage.cookies! {
+            if cookie.name == "XSRF-TOKEN" {
+                xsrfCookie = cookie
+            }
+        }
+        
+        if let xsrfCookie = xsrfCookie {
+            request.setValue(xsrfCookie.value, forHTTPHeaderField: "X-XSRF-TOKEN")
+        }
+        
+        let task = session.dataTask(with: request as URLRequest) { data, response, error in
+            
+            if error != nil {
+                print("There was an error logging out.")
+            }
+            
+            let range = Range(uncheckedBounds: (5, data!.count))
+            let scrubbedData = data?.subdata(in: range)
+            
+            print(NSString(data: scrubbedData!, encoding: String.Encoding.utf8.rawValue)!)
+            
+            let parsedResult : [String:AnyObject]!
+            
+            do {
+                parsedResult = try JSONSerialization.jsonObject(with: scrubbedData!, options: .allowFragments) as! [String:AnyObject]
+                let sessionDictionary = parsedResult["session"]
+                self.sessionID = sessionDictionary?["id"] as! String
+                //print(self.sessionID)
+                print("Logged out.")
+                
+            } catch {
+                print("Error with the JSON data")
+            }
+        }
+        
+        task.resume()
+        
+    } // End taskForPOSTDeleteSession
+    
+    
+    // Singleton pattern for a shared UdacityClient instance across the app
+    class func sharedInstance() -> UdacityClient {
+        
+        struct Singleton {
+            static var sharedInstance = UdacityClient()
+        }
+        
+        return Singleton.sharedInstance
+        
+    } // End sharedInstance()
     
 } // End UdacityClient
