@@ -80,6 +80,8 @@ class UdacityClient : NSObject {
         
         let request = NSMutableURLRequest(url: URL(string: "https://www.udacity.com/session")!)
         request.httpMethod = "DELETE"
+        request.addValue(Constants.jsonOK, forHTTPHeaderField: "Accept")
+        request.addValue(Constants.jsonOK, forHTTPHeaderField: "Content-Type")
         
         // remove any cookies associated with Udacity API granted session
         let sharedCookieStorage = HTTPCookieStorage.shared
