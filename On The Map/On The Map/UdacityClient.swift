@@ -36,11 +36,11 @@ class UdacityClient : NSObject {
     
     func taskForPOSTSession(methodType: String) {
         
-        let request = NSMutableURLRequest(url: URL(string: (Constants.webAddress + methodType))!)
+        let request = NSMutableURLRequest(url: URL(string: (UdacityConstants.udacityWebAddress + methodType))!)
         
         request.httpMethod = "POST"
-        request.addValue(Constants.jsonOK, forHTTPHeaderField: "Accept")
-        request.addValue(Constants.jsonOK, forHTTPHeaderField: "Content-Type")
+        request.addValue(UdacityConstants.jsonOK, forHTTPHeaderField: "Accept")
+        request.addValue(UdacityConstants.jsonOK, forHTTPHeaderField: "Content-Type")
         request.httpBody = "{\"udacity\": {\"username\": \"\(userEmail)\", \"password\": \"\(userPassword)\"}}".data(using: String.Encoding.utf8)
 
         print("Made Request")
@@ -78,10 +78,10 @@ class UdacityClient : NSObject {
         
         var xsrfCookie: HTTPCookie? = nil
         
-        let request = NSMutableURLRequest(url: URL(string: Constants.webAddress + Methods.session)!)
+        let request = NSMutableURLRequest(url: URL(string: UdacityConstants.udacityWebAddress + Methods.session)!)
         request.httpMethod = "DELETE"
-        request.addValue(Constants.jsonOK, forHTTPHeaderField: "Accept")
-        request.addValue(Constants.jsonOK, forHTTPHeaderField: "Content-Type")
+        request.addValue(UdacityConstants.jsonOK, forHTTPHeaderField: "Accept")
+        request.addValue(UdacityConstants.jsonOK, forHTTPHeaderField: "Content-Type")
         
         // remove any cookies associated with Udacity API granted session
         let sharedCookieStorage = HTTPCookieStorage.shared

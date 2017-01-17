@@ -7,8 +7,13 @@
 //
 
 import UIKit
+import MapKit
 
-class MapViewController : UIViewController {
+class MapViewController : UIViewController, MKMapViewDelegate {
+    
+    @IBOutlet weak var mapView: MKMapView!
+    
+    var parseTest = ParseClient()
     
     @IBAction func logoutButtonPressed(_ sender: Any) {
        
@@ -17,4 +22,9 @@ class MapViewController : UIViewController {
         self.dismiss(animated: true, completion: nil)
     }
 
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        let _ = parseTest.taskForGETMethod()
+    }
+    
 } // End MapViewController
