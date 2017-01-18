@@ -33,13 +33,13 @@ class ParseClient : NSObject {
                 return
             }
             
-            print(NSString(data: data!, encoding: String.Encoding.utf8.rawValue)!)
-            
-            let parsedResult : [String:AnyObject]!
+            //print(NSString(data: data!, encoding: String.Encoding.utf8.rawValue)!)
             
             do {
-                parsedResult = try JSONSerialization.jsonObject(with: data!, options: .allowFragments) as! [String:AnyObject]
-                print(parsedResult)
+                let parsedResult = try JSONSerialization.jsonObject(with: data!, options: .allowFragments) as! NSDictionary
+                //print(parsedResult)
+                
+                let _ = self.parseDataFromGETMethod(topLevelDictionary: parsedResult)
             } catch {
                 print("Error with the JSON data")
             }
@@ -47,5 +47,22 @@ class ParseClient : NSObject {
         task.resume()
     }
     
+    func parseDataFromGETMethod(topLevelDictionary: NSDictionary) {
+        
+        //print(topLevelDictionary)
+        
+        guard let resultsDictionary = topLevelDictionary["results"] as? [[String:AnyObject]] else {
+            print("Cannot find key 'results'")
+            return
+        }
+        print(resultsDictionary)
+        
+        for element in resultsDictionary {
+            var studentData = StudentLocation()
+            studentData.createdAt = element["createdAt"] as! String
+            print(studentData.createdAt)
+        }
+        
+    }
     
 } // End ParseClient

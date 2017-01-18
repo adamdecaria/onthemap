@@ -55,7 +55,7 @@ class UdacityClient : NSObject {
             let range = Range(uncheckedBounds: (5, data!.count))
             let scrubbedData = data?.subdata(in: range)
 
-            print(NSString(data: scrubbedData!, encoding: String.Encoding.utf8.rawValue)!)
+            //print(NSString(data: scrubbedData!, encoding: String.Encoding.utf8.rawValue)!)
 
             let parsedResult : [String:AnyObject]!
             
