@@ -13,12 +13,12 @@ struct StudentLocation {
     var createdAt : String = ""
     var firstName : String = ""
     var lastName : String = ""
-    var latitude : Float = 0.0
-    var longitude : Float = 0.0
+    var latitude : Double = 0.0
+    var longitude : Double = 0.0
     var mapString : String = ""
     var mediaURL : String = ""
     var objectID : String = ""
-    var uniqueKey : Float = 0.0
+    var uniqueKey : String = ""
     var updatedAt : String = ""
     
 } // End StudentLocation

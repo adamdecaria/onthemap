@@ -16,6 +16,8 @@ class ParseClient : NSObject {
     // shared URL session for this app
     let session = URLSession.shared
     
+    var studentArray = [StudentLocation]()
+    
     func taskForGETMethod() {
         
         let request = NSMutableURLRequest(url: URL(string: "\(ParseConstants.parseWebAddress)?limit=10")!)
@@ -49,20 +51,31 @@ class ParseClient : NSObject {
     
     func parseDataFromGETMethod(topLevelDictionary: NSDictionary) {
         
-        //print(topLevelDictionary)
-        
-        guard let resultsDictionary = topLevelDictionary["results"] as? [[String:AnyObject]] else {
+        guard let resultsArray = topLevelDictionary["results"] as? [[String:AnyObject]] else {
             print("Cannot find key 'results'")
             return
         }
-        print(resultsDictionary)
         
-        for element in resultsDictionary {
+        for element in resultsArray {
             var studentData = StudentLocation()
             studentData.createdAt = element["createdAt"] as! String
-            print(studentData.createdAt)
+            studentData.lastName = element["lastName"] as! String
+            studentData.firstName = element["firstName"] as! String
+            studentData.latitude = element["latitude"] as! Double
+            studentData.longitude = element["longitude"] as! Double
+            studentData.mapString = element["mapString"] as! String
+            studentData.mediaURL = element["mediaURL"] as! String
+            studentData.objectID = element["objectId"] as! String
+            studentData.updatedAt = element["updatedAt"] as! String
+            studentData.uniqueKey = element["uniqueKey"] as! String
+            
+            studentArray.append(studentData)
+            //print(studentArray)
         }
-        
-    }
+    } // End parseDataFromGETMethod
+    
+    func shareStudentData() -> [StudentLocation] {
+        return studentArray
+    } // End shareStudentData
     
 } // End ParseClient
