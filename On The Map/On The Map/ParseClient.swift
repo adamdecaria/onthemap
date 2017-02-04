@@ -16,11 +16,11 @@ class ParseClient : NSObject {
     // shared URL session for this app
     let session = URLSession.shared
     
-    var studentArray = [StudentLocation]()
+    var studentList = [StudentLocation]()
     
     func taskForGETMethod() {
         
-        let request = NSMutableURLRequest(url: URL(string: "\(ParseConstants.parseWebAddress)?limit=10")!)
+        let request = NSMutableURLRequest(url: URL(string: "\(ParseConstants.parseWebAddress)?limit=5")!)
         
         request.httpMethod = "GET"
         request.addValue(ParseAPIRequired.parseApplicationID, forHTTPHeaderField: "X-Parse-Application-Id")
@@ -41,41 +41,46 @@ class ParseClient : NSObject {
                 let parsedResult = try JSONSerialization.jsonObject(with: data!, options: .allowFragments) as! NSDictionary
                 //print(parsedResult)
                 
-                let _ = self.parseDataFromGETMethod(topLevelDictionary: parsedResult)
+                guard let resultsArray = parsedResult["results"] as? [[String:AnyObject]] else {
+                    print("Cannot find key 'results'")
+                    return
+                }
+                
+                for element in resultsArray {
+                    let student = StudentLocation(studentDictionary: element)
+                    self.studentList.append(student)
+                }
+                
+                //self.parseDataFromGETMethod(topLevelDictionary: parsedResult)
+                print("student list inisde the DO is \(self.studentList)")
             } catch {
                 print("Error with the JSON data")
             }
         }
+        print(self.studentList)
         task.resume()
+        
+        //print("Student list being returned from GET Method... \(self.studentList)")
+       //return studentList
     }
-    
+    /*
     func parseDataFromGETMethod(topLevelDictionary: NSDictionary) {
         
         guard let resultsArray = topLevelDictionary["results"] as? [[String:AnyObject]] else {
-            print("Cannot find key 'results'")
-            return
+           print("Cannot find key 'results'")
+           return
         }
         
         for element in resultsArray {
-            var studentData = StudentLocation()
-            studentData.createdAt = element["createdAt"] as! String
-            studentData.lastName = element["lastName"] as! String
-            studentData.firstName = element["firstName"] as! String
-            studentData.latitude = element["latitude"] as! Double
-            studentData.longitude = element["longitude"] as! Double
-            studentData.mapString = element["mapString"] as! String
-            studentData.mediaURL = element["mediaURL"] as! String
-            studentData.objectID = element["objectId"] as! String
-            studentData.updatedAt = element["updatedAt"] as! String
-            studentData.uniqueKey = element["uniqueKey"] as! String
-            
-            studentArray.append(studentData)
-            //print(studentArray)
+            let student = StudentLocation(studentDictionary: element)
+            self.studentList.append(student)
         }
-    } // End parseDataFromGETMethod
+        print("Student list from parseDataFromGET is... \(self.studentList)")
+    } // End parseDataFromGETMethod*/
     
-    func shareStudentData() -> [StudentLocation] {
-        return studentArray
-    } // End shareStudentData
+    func shareStudentList() -> [StudentLocation] {
+        print("Sharing this student list ... \(self.studentList)")
+        return self.studentList
+    }
     
 } // End ParseClient

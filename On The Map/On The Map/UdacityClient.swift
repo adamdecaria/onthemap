@@ -34,7 +34,7 @@ class UdacityClient : NSObject {
         userPassword = password
     }
     
-    func taskForPOSTSession(methodType: String) {
+    func taskForPOSTSession(methodType: String, completionHandler: () -> Void) {
         
         let request = NSMutableURLRequest(url: URL(string: (UdacityConstants.udacityWebAddress + methodType))!)
         
@@ -42,8 +42,6 @@ class UdacityClient : NSObject {
         request.addValue(UdacityConstants.jsonOK, forHTTPHeaderField: "Accept")
         request.addValue(UdacityConstants.jsonOK, forHTTPHeaderField: "Content-Type")
         request.httpBody = "{\"udacity\": {\"username\": \"\(userEmail)\", \"password\": \"\(userPassword)\"}}".data(using: String.Encoding.utf8)
-
-        print("Made Request")
         
         let task = session.dataTask(with: request as URLRequest) { data, response, error in
             
@@ -70,8 +68,10 @@ class UdacityClient : NSObject {
             }
             
         }
+      
         task.resume()
-        
+        completionHandler()
+
     } // End taskForPOSTSession
     
     func taskForPOSTDeleteSession() {

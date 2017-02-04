@@ -14,6 +14,7 @@ class MapViewController : UIViewController, MKMapViewDelegate {
     @IBOutlet weak var mapView: MKMapView!
     
     var dataFromParseAPI = ParseClient()
+    var studentList = [StudentLocation]()
     
     @IBAction func logoutButtonPressed(_ sender: Any) {
        
@@ -24,24 +25,31 @@ class MapViewController : UIViewController, MKMapViewDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        let _ = dataFromParseAPI.taskForGETMethod()
         
-        let data = dataFromParseAPI.shareStudentData()
-        print(data)
+        self.dataFromParseAPI.taskForGETMethod()
+        self.studentList = dataFromParseAPI.shareStudentList()
+        self.createMapWithPins()
+    
+    } // End viewDidLoad
+    
+    func createMapWithPins()  {
+        
+        let data = self.studentList
+        //print("This is the date from the parse API \(data)")
         
         var annotations = [MKPointAnnotation]()
-        
+            
         for element in data {
-            
+                
             let lat = CLLocationDegrees(element.latitude)
-            print(element.longitude)
+            //print(element.longitude)
             let long = CLLocationDegrees(element.longitude)
-            print(element.latitude)
+            //print(element.latitude)
             let coordinate = CLLocationCoordinate2D(latitude: lat, longitude: long)
-            
+                
             let firstName = element.firstName
             let lastName = element.lastName
-            let mediaURL = element.mediaURL 
+            let mediaURL = element.mediaURL
             
             let annotation = MKPointAnnotation()
             annotation.coordinate = coordinate
@@ -51,11 +59,10 @@ class MapViewController : UIViewController, MKMapViewDelegate {
             // store the individual annotation in an array of annotations
             annotations.append(annotation)
         }
-        print(annotations)
+        
         self.mapView.addAnnotations(annotations)
-    
-    } // End viewDidLoad
-    
+    }
+        
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
         
         let reuseID = "pin"
