@@ -28,37 +28,40 @@ class ParseClient : NSObject {
         request.addValue(ParseConstants.jsonOK, forHTTPHeaderField: "Accept")
         request.addValue(ParseConstants.jsonOK, forHTTPHeaderField: "Content-Type")
         
-        let task = session.dataTask(with: request as URLRequest) { data, response, error in
-            
-            if error != nil {
-                print("Error with URL request")
-                return
-            }
-            
-            //print(NSString(data: data!, encoding: String.Encoding.utf8.rawValue)!)
-            
-            do {
-                let parsedResult = try JSONSerialization.jsonObject(with: data!, options: .allowFragments) as! NSDictionary
-                //print(parsedResult)
+        DispatchQueue.main.async {
+            print("isMainThread: \(Thread.isMainThread)")
+            let task = self.session.dataTask(with: request as URLRequest) { data, response, error in
                 
-                guard let resultsArray = parsedResult["results"] as? [[String:AnyObject]] else {
-                    print("Cannot find key 'results'")
+                if error != nil {
+                    print("Error with URL request")
                     return
                 }
                 
-                for element in resultsArray {
-                    let student = StudentLocation(studentDictionary: element)
-                    self.studentList.append(student)
-                }
+                //print(NSString(data: data!, encoding: String.Encoding.utf8.rawValue)!)
                 
-                //self.parseDataFromGETMethod(topLevelDictionary: parsedResult)
-                print("student list inisde the DO is \(self.studentList)")
-            } catch {
-                print("Error with the JSON data")
+                do {
+                    let parsedResult = try JSONSerialization.jsonObject(with: data!, options: .allowFragments) as! NSDictionary
+                    //print(parsedResult)
+                    
+                    guard let resultsArray = parsedResult["results"] as? [[String:AnyObject]] else {
+                        print("Cannot find key 'results'")
+                        return
+                    }
+                    
+                    for element in resultsArray {
+                        let student = StudentLocation(studentDictionary: element)
+                        self.studentList.append(student)
+                    }
+                    
+                    //self.parseDataFromGETMethod(topLevelDictionary: parsedResult)
+                    print("student list inisde the DO is \(self.studentList)")
+                } catch {
+                    print("Error with the JSON data")
+                }
             }
+            print(self.studentList)
+            task.resume()
         }
-        print(self.studentList)
-        task.resume()
         
         //print("Student list being returned from GET Method... \(self.studentList)")
        //return studentList

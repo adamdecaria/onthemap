@@ -43,33 +43,37 @@ class UdacityClient : NSObject {
         request.addValue(UdacityConstants.jsonOK, forHTTPHeaderField: "Content-Type")
         request.httpBody = "{\"udacity\": {\"username\": \"\(userEmail)\", \"password\": \"\(userPassword)\"}}".data(using: String.Encoding.utf8)
         
-        let task = session.dataTask(with: request as URLRequest) { data, response, error in
+        DispatchQueue.main.async {
             
-            if error != nil {
-                print("There was an error getting a session.")
-                return
+            print("isMainThread: \(Thread.isMainThread)")
+            let task = self.session.dataTask(with: request as URLRequest) { data, response, error in
+                
+                if error != nil {
+                    print("There was an error getting a session.")
+                    return
+                }
+                
+                let range = Range(uncheckedBounds: (5, data!.count))
+                let scrubbedData = data?.subdata(in: range)
+                
+                //print(NSString(data: scrubbedData!, encoding: String.Encoding.utf8.rawValue)!)
+                
+                let parsedResult : [String:AnyObject]!
+                
+                do {
+                    parsedResult = try JSONSerialization.jsonObject(with: scrubbedData!, options: .allowFragments) as! [String:AnyObject]
+                    let sessionDictionary = parsedResult["session"]
+                    self.sessionID = sessionDictionary?["id"] as! String
+                    print(self.sessionID)
+                    
+                } catch {
+                    print("Error with the JSON data")
+                }
+                
             }
-
-            let range = Range(uncheckedBounds: (5, data!.count))
-            let scrubbedData = data?.subdata(in: range)
-
-            //print(NSString(data: scrubbedData!, encoding: String.Encoding.utf8.rawValue)!)
-
-            let parsedResult : [String:AnyObject]!
             
-            do {
-                parsedResult = try JSONSerialization.jsonObject(with: scrubbedData!, options: .allowFragments) as! [String:AnyObject]
-                let sessionDictionary = parsedResult["session"]
-                self.sessionID = sessionDictionary?["id"] as! String
-                print(self.sessionID)
-            
-            } catch {
-                print("Error with the JSON data")
-            }
-            
+            task.resume()
         }
-      
-        task.resume()
         completionHandler()
 
     } // End taskForPOSTSession

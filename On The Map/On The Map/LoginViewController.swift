@@ -39,13 +39,12 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     
     
     @IBAction func loginButtonPressed(_ sender: Any) {
-        print("Login button pressed.")
-        
+
         if emailTextField.hasText && passwordTextField.hasText {
+            
             UdacityClient.sharedInstance().getLoginInfo(username: emailTextField.text!, password: passwordTextField.text!)
             
-            let _ = UdacityClient.sharedInstance().taskForPOSTSession(methodType: UdacityClient.Methods.session, completionHandler: { () -> Void in
-                
+            UdacityClient.sharedInstance().taskForPOSTSession(methodType: UdacityClient.Methods.session, completionHandler: { () -> Void in
                 let mapViewController = (storyboard?.instantiateViewController(withIdentifier: "MapViewController"))! as UIViewController
                 self.present(mapViewController, animated: true, completion: nil) })
             
