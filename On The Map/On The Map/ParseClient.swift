@@ -18,7 +18,7 @@ class ParseClient : NSObject {
     
     var studentList = [StudentLocation]()
     
-    func taskForGETMethod() {
+    func taskForGETMethod(completionHandler: @escaping () -> Void) {
         
         let request = NSMutableURLRequest(url: URL(string: "\(ParseConstants.parseWebAddress)?limit=5")!)
         
@@ -28,17 +28,16 @@ class ParseClient : NSObject {
         request.addValue(ParseConstants.jsonOK, forHTTPHeaderField: "Accept")
         request.addValue(ParseConstants.jsonOK, forHTTPHeaderField: "Content-Type")
         
-        DispatchQueue.main.async {
-            print("isMainThread: \(Thread.isMainThread)")
-            let task = self.session.dataTask(with: request as URLRequest) { data, response, error in
-                
-                if error != nil {
-                    print("Error with URL request")
-                    return
-                }
-                
-                //print(NSString(data: data!, encoding: String.Encoding.utf8.rawValue)!)
-                
+        
+        let task = self.session.dataTask(with: request as URLRequest) { data, response, error in
+            
+            if error != nil {
+                print("Error with URL request")
+                return
+            }
+            
+            //print(NSString(data: data!, encoding: String.Encoding.utf8.rawValue)!)
+            DispatchQueue.global(qos: .userInitiated).async {
                 do {
                     let parsedResult = try JSONSerialization.jsonObject(with: data!, options: .allowFragments) as! NSDictionary
                     //print(parsedResult)
@@ -54,36 +53,38 @@ class ParseClient : NSObject {
                     }
                     
                     //self.parseDataFromGETMethod(topLevelDictionary: parsedResult)
-                    print("student list inisde the DO is \(self.studentList)")
+                    
                 } catch {
                     print("Error with the JSON data")
                 }
             }
-            print(self.studentList)
-            task.resume()
+            
+            DispatchQueue.main.async {
+                completionHandler()
+            }
         }
-        
+        task.resume()
         //print("Student list being returned from GET Method... \(self.studentList)")
-       //return studentList
+        //return studentList
     }
     /*
-    func parseDataFromGETMethod(topLevelDictionary: NSDictionary) {
-        
-        guard let resultsArray = topLevelDictionary["results"] as? [[String:AnyObject]] else {
-           print("Cannot find key 'results'")
-           return
-        }
-        
-        for element in resultsArray {
-            let student = StudentLocation(studentDictionary: element)
-            self.studentList.append(student)
-        }
-        print("Student list from parseDataFromGET is... \(self.studentList)")
-    } // End parseDataFromGETMethod*/
+     func parseDataFromGETMethod(topLevelDictionary: NSDictionary) {
+     
+     guard let resultsArray = topLevelDictionary["results"] as? [[String:AnyObject]] else {
+     print("Cannot find key 'results'")
+     return
+     }
+     
+     for element in resultsArray {
+     let student = StudentLocation(studentDictionary: element)
+     self.studentList.append(student)
+     }
+     print("Student list from parseDataFromGET is... \(self.studentList)")
+     } // End parseDataFromGETMethod*/
     
     func shareStudentList() -> [StudentLocation] {
         print("Sharing this student list ... \(self.studentList)")
         return self.studentList
     }
     
-} // End ParseClient
+}// End ParseClient

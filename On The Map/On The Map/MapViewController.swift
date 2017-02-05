@@ -17,36 +17,37 @@ class MapViewController : UIViewController, MKMapViewDelegate {
     var studentList = [StudentLocation]()
     
     @IBAction func logoutButtonPressed(_ sender: Any) {
-       
+        
         print("LOGOUT button pressed")
         let _ = UdacityClient.sharedInstance().taskForPOSTDeleteSession()
         self.dismiss(animated: true, completion: nil)
     }
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.dataFromParseAPI.taskForGETMethod()
-        self.studentList = dataFromParseAPI.shareStudentList()
-        self.createMapWithPins()
-    
+        self.dataFromParseAPI.taskForGETMethod(completionHandler: { () -> Void in self.studentList = self.dataFromParseAPI.shareStudentList()
+            self.createMapWithPins()
+        })
+
+        
     } // End viewDidLoad
     
     func createMapWithPins()  {
-        
+        print("Number of entries: \(studentList.count)")
         let data = self.studentList
         //print("This is the date from the parse API \(data)")
         
         var annotations = [MKPointAnnotation]()
-            
+        
         for element in data {
-                
+            
             let lat = CLLocationDegrees(element.latitude)
             //print(element.longitude)
             let long = CLLocationDegrees(element.longitude)
             //print(element.latitude)
             let coordinate = CLLocationCoordinate2D(latitude: lat, longitude: long)
-                
+            
             let firstName = element.firstName
             let lastName = element.lastName
             let mediaURL = element.mediaURL
@@ -62,7 +63,7 @@ class MapViewController : UIViewController, MKMapViewDelegate {
         
         self.mapView.addAnnotations(annotations)
     }
-        
+    
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
         
         let reuseID = "pin"
