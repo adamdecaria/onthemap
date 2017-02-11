@@ -19,9 +19,9 @@ class MapViewController : UIViewController, MKMapViewDelegate {
     @IBAction func logoutButtonPressed(_ sender: Any) {
         
         print("LOGOUT button pressed")
-        let _ = UdacityClient.sharedInstance().taskForPOSTDeleteSession()
-        self.dismiss(animated: true, completion: nil)
-    }
+        let _ = UdacityClient.sharedInstance().taskForPOSTDeleteSession(completionHandler: { () -> Void in
+            self.dismiss(animated: true, completion: nil) })
+    } // End logoutButtonPressed
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,40 +29,41 @@ class MapViewController : UIViewController, MKMapViewDelegate {
         self.dataFromParseAPI.taskForGETMethod(completionHandler: { () -> Void in self.studentList = self.dataFromParseAPI.shareStudentList()
             self.createMapWithPins()
         })
-
         
     } // End viewDidLoad
     
     func createMapWithPins()  {
-        print("Number of entries: \(studentList.count)")
+
         let data = self.studentList
-        //print("This is the date from the parse API \(data)")
         
         var annotations = [MKPointAnnotation]()
         
         for element in data {
             
-            let lat = CLLocationDegrees(element.latitude)
-            //print(element.longitude)
-            let long = CLLocationDegrees(element.longitude)
-            //print(element.latitude)
-            let coordinate = CLLocationCoordinate2D(latitude: lat, longitude: long)
+            if element != nil {
             
-            let firstName = element.firstName
-            let lastName = element.lastName
-            let mediaURL = element.mediaURL
+                let lat = CLLocationDegrees(element.latitude)
+                let long = CLLocationDegrees(element.longitude)
+                let coordinate = CLLocationCoordinate2D(latitude: lat, longitude: long)
             
-            let annotation = MKPointAnnotation()
-            annotation.coordinate = coordinate
-            annotation.title = "\(firstName) \(lastName)"
-            annotation.subtitle = mediaURL
+                let firstName = element.firstName
+                let lastName = element.lastName
+    
+                let mediaURL = element.mediaURL
             
-            // store the individual annotation in an array of annotations
-            annotations.append(annotation)
+                let annotation = MKPointAnnotation()
+                annotation.coordinate = coordinate
+                annotation.title = "\(firstName) \(lastName)"
+                annotation.subtitle = mediaURL
+            
+                // store the individual annotation in an array of annotations
+                annotations.append(annotation)
+            }
         }
-        
+
         self.mapView.addAnnotations(annotations)
-    }
+
+    } // End createMapWithPins
     
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
         
@@ -80,6 +81,6 @@ class MapViewController : UIViewController, MKMapViewDelegate {
         }
         
         return pinView
-    }
+    } // End mapView
     
 } // End MapViewController

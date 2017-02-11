@@ -15,19 +15,17 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     
     // textField for password entry to login
     @IBOutlet weak var passwordTextField: UITextField!
-   
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
-    }
-
+    
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
     
     override func viewWillAppear(_ animated: Bool) {
-
+        super.viewWillAppear(animated)
+        self.activityIndicator.stopAnimating()
     }
     
     // ensure textField puts the keyboard away after use
@@ -39,14 +37,20 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     
     
     @IBAction func loginButtonPressed(_ sender: Any) {
-
+    
+        DispatchQueue.main.async {
+            self.activityIndicator.startAnimating()
+        }
+        
         if emailTextField.hasText && passwordTextField.hasText {
             
             UdacityClient.sharedInstance().getLoginInfo(username: emailTextField.text!, password: passwordTextField.text!)
-            
+       
             UdacityClient.sharedInstance().taskForPOSTSession(methodType: UdacityClient.Methods.session, completionHandler: { () -> Void in
-                let mapViewController = (storyboard?.instantiateViewController(withIdentifier: "MapViewController"))! as UIViewController
+                let mapViewController = (self.storyboard?.instantiateViewController(withIdentifier: "MapViewController"))! as UIViewController
                 self.present(mapViewController, animated: true, completion: nil) })
+            
+            self.activityIndicator.stopAnimating()
             
         } else {
             

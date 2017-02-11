@@ -34,7 +34,7 @@ class UdacityClient : NSObject {
         userPassword = password
     }
     
-    func taskForPOSTSession(methodType: String, completionHandler: () -> Void) {
+    func taskForPOSTSession(methodType: String, completionHandler: @escaping () -> Void) {
         
         let request = NSMutableURLRequest(url: URL(string: (UdacityConstants.udacityWebAddress + methodType))!)
         
@@ -43,22 +43,24 @@ class UdacityClient : NSObject {
         request.addValue(UdacityConstants.jsonOK, forHTTPHeaderField: "Content-Type")
         request.httpBody = "{\"udacity\": {\"username\": \"\(userEmail)\", \"password\": \"\(userPassword)\"}}".data(using: String.Encoding.utf8)
         
-        DispatchQueue.main.async {
+
+
+        let task = self.session.dataTask(with: request as URLRequest) { data, response, error in
+                
+            if error != nil {
+                print("There was an error getting a session.")
+                return
+            }
+                
+            let range = Range(uncheckedBounds: (5, data!.count))
+            let scrubbedData = data?.subdata(in: range)
+                
+            //print(NSString(data: scrubbedData!, encoding: String.Encoding.utf8.rawValue)!)
+                
+            var parsedResult : [String:AnyObject]!
             
-            print("isMainThread: \(Thread.isMainThread)")
-            let task = self.session.dataTask(with: request as URLRequest) { data, response, error in
-                
-                if error != nil {
-                    print("There was an error getting a session.")
-                    return
-                }
-                
-                let range = Range(uncheckedBounds: (5, data!.count))
-                let scrubbedData = data?.subdata(in: range)
-                
-                //print(NSString(data: scrubbedData!, encoding: String.Encoding.utf8.rawValue)!)
-                
-                let parsedResult : [String:AnyObject]!
+            
+            DispatchQueue.global(qos: .userInitiated).async {
                 
                 do {
                     parsedResult = try JSONSerialization.jsonObject(with: scrubbedData!, options: .allowFragments) as! [String:AnyObject]
@@ -69,16 +71,19 @@ class UdacityClient : NSObject {
                 } catch {
                     print("Error with the JSON data")
                 }
-                
             }
             
-            task.resume()
+            DispatchQueue.main.async {
+                completionHandler()
+            }
+            
         }
-        completionHandler()
-
+        
+        task.resume()
+        
     } // End taskForPOSTSession
     
-    func taskForPOSTDeleteSession() {
+    func taskForPOSTDeleteSession(completionHandler: @escaping () -> Void) {
         
         var xsrfCookie: HTTPCookie? = nil
         
@@ -111,17 +116,23 @@ class UdacityClient : NSObject {
             
             print(NSString(data: scrubbedData!, encoding: String.Encoding.utf8.rawValue)!)
             
-            let parsedResult : [String:AnyObject]!
+            var parsedResult : [String:AnyObject]!
             
-            do {
-                parsedResult = try JSONSerialization.jsonObject(with: scrubbedData!, options: .allowFragments) as! [String:AnyObject]
-                let sessionDictionary = parsedResult["session"]
-                self.sessionID = sessionDictionary?["id"] as! String
-                //print(self.sessionID)
-                print("Logged out.")
-                
-            } catch {
-                print("Error with the JSON data")
+            DispatchQueue.global(qos: .userInitiated).async {
+                do {
+                    parsedResult = try JSONSerialization.jsonObject(with: scrubbedData!, options: .allowFragments) as! [String:AnyObject]
+                    let sessionDictionary = parsedResult["session"]
+                    self.sessionID = sessionDictionary?["id"] as! String
+                    
+                    print("Logged out.")
+                    
+                } catch {
+                    print("Error with the JSON data")
+                }
+            }
+            
+            DispatchQueue.main.async {
+                completionHandler()
             }
         }
         
