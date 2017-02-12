@@ -95,11 +95,19 @@
                                         </barButtonItem>
                                         <rightBarButtonItems>
                                             <barButtonItem systemItem="add" id="O8j-UO-qhL"/>
-                                            <barButtonItem systemItem="refresh" id="FHE-gJ-fLe"/>
+                                            <barButtonItem systemItem="refresh" id="D4z-5t-o6J">
+                                                <connections>
+                                                    <action selector="refreshButtonPressed:" destination="sBF-Bm-t0S" id="fIY-8Y-mGQ"/>
+                                                </connections>
+                                            </barButtonItem>
                                         </rightBarButtonItems>
                                     </navigationItem>
                                 </items>
                             </navigationBar>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" hidesWhenStopped="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="e47-5M-AZ4">
+                                <rect key="frame" x="177" y="301" width="20" height="20"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -113,6 +121,7 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="activityIndicator" destination="e47-5M-AZ4" id="5NB-zT-r0t"/>
                         <outlet property="mapView" destination="DZx-er-E5A" id="Gp6-Qt-XM6"/>
                     </connections>
                 </viewController>

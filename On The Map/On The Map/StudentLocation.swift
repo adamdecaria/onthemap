@@ -22,17 +22,34 @@ struct StudentLocation {
     var updatedAt : String
     
     
-    init(studentDictionary: [String : AnyObject]) {
-        self.createdAt = studentDictionary["createdAt"] as! String
-        self.firstName = studentDictionary["firstName"] as! String
-        self.lastName  = studentDictionary["lastName"] as! String
-        self.latitude = studentDictionary["latitude"] as! Double
-        self.longitude = studentDictionary["longitude"] as! Double
-        self.mapString = studentDictionary["mapString"] as! String
-        self.mediaURL = studentDictionary["mediaURL"] as! String
-        self.objectID = studentDictionary["objectId"] as! String
-        self.uniqueKey = studentDictionary["uniqueKey"] as! String
-        self.updatedAt = studentDictionary["updatedAt"] as! String
+    init?(studentDictionary: [String : AnyObject]) {
+        
+        // ensure there are corresponding values to each key
+        guard
+            let createdAt = studentDictionary["createdAt"] as? String,
+            let firstName = studentDictionary["firstName"] as? String,
+            let lastName = studentDictionary["lastName"] as? String,
+            let latitude = studentDictionary["latitude"] as? Double,
+            let longitude = studentDictionary["longitude"] as? Double,
+            let mapString = studentDictionary["mapString"] as? String,
+            let mediaURL = studentDictionary["mediaURL"] as? String,
+            let objectID = studentDictionary["objectId"] as? String,
+            let uniqueKey = studentDictionary["uniqueKey"] as? String,
+            let updatedAt = studentDictionary["updatedAt"] as? String
+        
+            else { return nil } // return nil if object cannot be created
+        
+        // create object if all keys have values
+        self.createdAt = createdAt
+        self.firstName = firstName
+        self.lastName  = lastName
+        self.latitude = latitude
+        self.longitude = longitude
+        self.mapString = mapString
+        self.mediaURL = mediaURL
+        self.objectID = objectID
+        self.uniqueKey = uniqueKey
+        self.updatedAt = updatedAt
     }
     
 } // End StudentLocation

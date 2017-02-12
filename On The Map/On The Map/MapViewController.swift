@@ -16,12 +16,12 @@ class MapViewController : UIViewController, MKMapViewDelegate {
     var dataFromParseAPI = ParseClient()
     var studentList = [StudentLocation]()
     
-    @IBAction func logoutButtonPressed(_ sender: Any) {
-        
-        print("LOGOUT button pressed")
-        let _ = UdacityClient.sharedInstance().taskForPOSTDeleteSession(completionHandler: { () -> Void in
-            self.dismiss(animated: true, completion: nil) })
-    } // End logoutButtonPressed
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        activityIndicator.stopAnimating()
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,6 +32,34 @@ class MapViewController : UIViewController, MKMapViewDelegate {
         
     } // End viewDidLoad
     
+    @IBAction func logoutButtonPressed(_ sender: Any) {
+   
+        DispatchQueue.main.async {
+            self.activityIndicator.startAnimating()
+        }
+        
+        let _ = UdacityClient.sharedInstance().taskForPOSTDeleteSession(completionHandler: { () -> Void in
+            self.dismiss(animated: true, completion: nil) })
+            self.activityIndicator.stopAnimating()
+        
+    } // End logoutButtonPressed
+
+    @IBAction func refreshButtonPressed(_ sender: UIBarButtonItem) {
+        
+        DispatchQueue.main.async {
+            self.activityIndicator.startAnimating()
+        }
+        
+        self.dataFromParseAPI.taskForGETMethod(completionHandler: { () -> Void in self.studentList = self.dataFromParseAPI.shareStudentList()
+            self.createMapWithPins()
+        })
+        
+        DispatchQueue.main.async {
+            self.activityIndicator.stopAnimating()
+        }
+        
+    } // End refreshButtonPressed
+    
     func createMapWithPins()  {
 
         let data = self.studentList
@@ -40,27 +68,23 @@ class MapViewController : UIViewController, MKMapViewDelegate {
         
         for element in data {
             
-            if element != nil {
+            let lat = CLLocationDegrees(element.latitude)
+            let long = CLLocationDegrees(element.longitude)
+            let coordinate = CLLocationCoordinate2D(latitude: lat, longitude: long)
             
-                let lat = CLLocationDegrees(element.latitude)
-                let long = CLLocationDegrees(element.longitude)
-                let coordinate = CLLocationCoordinate2D(latitude: lat, longitude: long)
-            
-                let firstName = element.firstName
-                let lastName = element.lastName
+            let firstName = element.firstName
+            let lastName = element.lastName
     
-                let mediaURL = element.mediaURL
+            let mediaURL = element.mediaURL
             
-                let annotation = MKPointAnnotation()
-                annotation.coordinate = coordinate
-                annotation.title = "\(firstName) \(lastName)"
-                annotation.subtitle = mediaURL
+            let annotation = MKPointAnnotation()
+            annotation.coordinate = coordinate
+            annotation.title = "\(firstName) \(lastName)"
+            annotation.subtitle = mediaURL
             
-                // store the individual annotation in an array of annotations
-                annotations.append(annotation)
-            }
+            // store the individual annotation in an array of annotations
+            annotations.append(annotation)
         }
-
         self.mapView.addAnnotations(annotations)
 
     } // End createMapWithPins

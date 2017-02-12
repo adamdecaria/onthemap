@@ -20,7 +20,7 @@ class ParseClient : NSObject {
     
     func taskForGETMethod(completionHandler: @escaping () -> Void) {
         
-        let request = NSMutableURLRequest(url: URL(string: "\(ParseConstants.parseWebAddress)?limit=80")!)
+        let request = NSMutableURLRequest(url: URL(string: "\(ParseConstants.parseWebAddress)?limit=100")!)
         
         request.httpMethod = "GET"
         request.addValue(ParseAPIRequired.parseApplicationID, forHTTPHeaderField: "X-Parse-Application-Id")
@@ -48,8 +48,12 @@ class ParseClient : NSObject {
                     }
                     
                     for element in resultsArray {
-                        let student = StudentLocation(studentDictionary: element)
-                        self.studentList.append(student)
+                        // check to make sure there is student data
+                        if let student = StudentLocation(studentDictionary: element) {
+                            self.studentList.append((student))
+                        } else {
+                            print("no student info")
+                        }
                     }
                     
                     //self.parseDataFromGETMethod(topLevelDictionary: parsedResult)
