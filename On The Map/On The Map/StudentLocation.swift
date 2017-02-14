@@ -50,6 +50,6 @@ struct StudentLocation {
         self.objectID = objectID
         self.uniqueKey = uniqueKey
         self.updatedAt = updatedAt
-    }
+    } // End init
     
 } // End StudentLocation

@@ -47,8 +47,8 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
             UdacityClient.sharedInstance().getLoginInfo(username: emailTextField.text!, password: passwordTextField.text!)
        
             UdacityClient.sharedInstance().taskForPOSTSession(methodType: UdacityClient.Methods.session, completionHandler: { () -> Void in
-                let mapViewController = (self.storyboard?.instantiateViewController(withIdentifier: "MapViewController"))! as UIViewController
-                self.present(mapViewController, animated: true, completion: nil) })
+                let tabBarController = (self.storyboard?.instantiateViewController(withIdentifier: "TabBarController"))! as UIViewController
+                self.present(tabBarController, animated: true, completion: nil) })
             
             self.activityIndicator.stopAnimating()
             

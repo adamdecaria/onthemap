@@ -40,7 +40,6 @@ class ParseClient : NSObject {
             DispatchQueue.global(qos: .userInitiated).async {
                 do {
                     let parsedResult = try JSONSerialization.jsonObject(with: data!, options: .allowFragments) as! NSDictionary
-                    //print(parsedResult)
                     
                     guard let resultsArray = parsedResult["results"] as? [[String:AnyObject]] else {
                         print("Cannot find key 'results'")
@@ -56,8 +55,6 @@ class ParseClient : NSObject {
                         }
                     }
                     
-                    //self.parseDataFromGETMethod(topLevelDictionary: parsedResult)
-                    
                 } catch {
                     print("Error with the JSON data")
                 }
@@ -68,25 +65,10 @@ class ParseClient : NSObject {
             }
         }
         task.resume()
-    }
-    /*
-     func parseDataFromGETMethod(topLevelDictionary: NSDictionary) {
-     
-     guard let resultsArray = topLevelDictionary["results"] as? [[String:AnyObject]] else {
-     print("Cannot find key 'results'")
-     return
-     }
-     
-     for element in resultsArray {
-     let student = StudentLocation(studentDictionary: element)
-     self.studentList.append(student)
-     }
-     print("Student list from parseDataFromGET is... \(self.studentList)")
-     } // End parseDataFromGETMethod*/
+    } // End taskForGETMethod
     
     func shareStudentList() -> [StudentLocation] {
-        print("Sharing this student list ... \(self.studentList)")
         return self.studentList
-    }
+    } // End shareStudentList
     
 }// End ParseClient

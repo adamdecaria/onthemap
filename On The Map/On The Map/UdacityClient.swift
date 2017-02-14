@@ -66,8 +66,6 @@ class UdacityClient : NSObject {
                     parsedResult = try JSONSerialization.jsonObject(with: scrubbedData!, options: .allowFragments) as! [String:AnyObject]
                     let sessionDictionary = parsedResult["session"]
                     self.sessionID = sessionDictionary?["id"] as! String
-                    print(self.sessionID)
-                    
                 } catch {
                     print("Error with the JSON data")
                 }

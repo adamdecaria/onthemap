@@ -32,17 +32,20 @@ class MapViewController : UIViewController, MKMapViewDelegate {
         
     } // End viewDidLoad
     
+    
     @IBAction func logoutButtonPressed(_ sender: Any) {
-   
+        
         DispatchQueue.main.async {
             self.activityIndicator.startAnimating()
         }
         
         let _ = UdacityClient.sharedInstance().taskForPOSTDeleteSession(completionHandler: { () -> Void in
             self.dismiss(animated: true, completion: nil) })
-            self.activityIndicator.stopAnimating()
-        
+        self.activityIndicator.stopAnimating()
+    
     } // End logoutButtonPressed
+
+    
 
     @IBAction func refreshButtonPressed(_ sender: UIBarButtonItem) {
         
