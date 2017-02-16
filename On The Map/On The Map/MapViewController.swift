@@ -13,7 +13,6 @@ class MapViewController : UIViewController, MKMapViewDelegate {
     
     @IBOutlet weak var mapView: MKMapView!
     
-    var dataFromParseAPI = ParseClient()
     var studentList = [StudentLocation]()
     
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
@@ -26,7 +25,7 @@ class MapViewController : UIViewController, MKMapViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.dataFromParseAPI.taskForGETMethod(completionHandler: { () -> Void in self.studentList = self.dataFromParseAPI.shareStudentList()
+        ParseClient.sharedInstance().taskForGETMethod(completionHandler: { () -> Void in self.studentList = ParseClient.sharedInstance().shareStudentList()
             self.createMapWithPins()
         })
         
@@ -53,7 +52,7 @@ class MapViewController : UIViewController, MKMapViewDelegate {
             self.activityIndicator.startAnimating()
         }
         
-        self.dataFromParseAPI.taskForGETMethod(completionHandler: { () -> Void in self.studentList = self.dataFromParseAPI.shareStudentList()
+        ParseClient.sharedInstance().taskForGETMethod(completionHandler: { () -> Void in self.studentList = ParseClient.sharedInstance().shareStudentList()
             self.createMapWithPins()
         })
         

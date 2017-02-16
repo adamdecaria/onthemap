@@ -46,7 +46,16 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
             
             UdacityClient.sharedInstance().getLoginInfo(username: emailTextField.text!, password: passwordTextField.text!)
        
-            UdacityClient.sharedInstance().taskForPOSTSession(methodType: UdacityClient.Methods.session, completionHandler: { () -> Void in
+            UdacityClient.sharedInstance().taskForPOSTSession(methodType: UdacityClient.Methods.session, completionHandler: { (_ error) -> Void in
+                
+                guard (error == nil) else {
+                    let errorMessage = UIAlertController.init(title: "Error", message: "There was an error: \(error).", preferredStyle: .alert)
+                    let okAction = UIAlertAction(title: "OK", style: .default)
+                    errorMessage.addAction(okAction)
+                    self.present(errorMessage, animated: true)
+                    return
+                }
+                
                 let tabBarController = (self.storyboard?.instantiateViewController(withIdentifier: "TabBarController"))! as UIViewController
                 self.present(tabBarController, animated: true, completion: nil) })
             

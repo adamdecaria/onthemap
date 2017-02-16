@@ -34,7 +34,7 @@ class UdacityClient : NSObject {
         userPassword = password
     }
     
-    func taskForPOSTSession(methodType: String, completionHandler: @escaping () -> Void) {
+    func taskForPOSTSession(methodType: String, completionHandler: @escaping (_ error: String?) -> Void) {
         
         let request = NSMutableURLRequest(url: URL(string: (UdacityConstants.udacityWebAddress + methodType))!)
         
@@ -42,16 +42,25 @@ class UdacityClient : NSObject {
         request.addValue(UdacityConstants.jsonOK, forHTTPHeaderField: "Accept")
         request.addValue(UdacityConstants.jsonOK, forHTTPHeaderField: "Content-Type")
         request.httpBody = "{\"udacity\": {\"username\": \"\(userEmail)\", \"password\": \"\(userPassword)\"}}".data(using: String.Encoding.utf8)
-        
-
 
         let task = self.session.dataTask(with: request as URLRequest) { data, response, error in
-                
-            if error != nil {
-                print("There was an error getting a session.")
+            
+            func errorHandler(_ error: String) {
+                print(error)
+                completionHandler(error)
+            }
+            
+            guard (error == nil) else {
+                errorHandler(error as! String)
                 return
             }
-                
+            
+            /* GUARD: Ensure a successful 2XX response was received */
+            guard let statusCode = (response as? HTTPURLResponse)?.statusCode, statusCode >= 200 && statusCode <= 299 else {
+                errorHandler("Bad response from the server.  Check username/password.")
+                return
+            }
+            
             let range = Range(uncheckedBounds: (5, data!.count))
             let scrubbedData = data?.subdata(in: range)
                 
@@ -72,7 +81,7 @@ class UdacityClient : NSObject {
             }
             
             DispatchQueue.main.async {
-                completionHandler()
+                completionHandler(nil)
             }
             
         }

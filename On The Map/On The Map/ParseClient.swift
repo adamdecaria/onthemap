@@ -71,4 +71,15 @@ class ParseClient : NSObject {
         return self.studentList
     } // End shareStudentList
     
+    // Singleton pattern for a shared UdacityClient instance across the app
+    class func sharedInstance() -> ParseClient {
+        
+        struct ParseSingleton {
+            static var sharedParseInstance = ParseClient()
+        }
+        
+        return ParseSingleton.sharedParseInstance
+        
+    } // End sharedInstance()
+    
 }// End ParseClient
