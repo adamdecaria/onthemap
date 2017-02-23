@@ -20,6 +20,10 @@ class StudentLocationTableViewController: UITableViewController {
         
         activityIndicator.hidesWhenStopped = true
         studentList = ParseClient.sharedInstance().shareStudentList()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         tableView.reloadData()
     }
     
@@ -57,15 +61,25 @@ class StudentLocationTableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
         let cell = tableView.dequeueReusableCell(withIdentifier: "StudentLocationTableViewCell")
         let student = studentList[indexPath.row]
-     
+        
         cell?.textLabel?.text = student.firstName + " " + student.lastName
         return cell!
-    }
-    /*
+    } // End tableView
+    
+    
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        <#code#>
-    }
-   */
+        
+        let student = studentList[indexPath.row]
+        let studentURL = student.mediaURL
+        
+        print(studentURL)
+        
+        let app = UIApplication.shared
+        app.open(URL(string: studentURL)!, options: [:], completionHandler: nil)
+        
+    } // End tableView
+   
 } // End StudentLocationTableViewController

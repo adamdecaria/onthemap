@@ -12,7 +12,7 @@ class StudentLocationTableViewCell: UITableViewCell {
     
     // Outlets
     @IBOutlet weak var locationIconImage: UIImageView!
-    @IBOutlet weak var StudentNameLabel: UILabel!
+    @IBOutlet weak var studentNameLabel: UILabel!
     
     override func awakeFromNib() {
         super.awakeFromNib()
