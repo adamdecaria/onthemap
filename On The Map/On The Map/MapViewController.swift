@@ -24,6 +24,7 @@ class MapViewController : UIViewController, MKMapViewDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        mapView.delegate = self
         
         ParseClient.sharedInstance().taskForGETMethod(completionHandler: { () -> Void in self.studentList = ParseClient.sharedInstance().shareStudentList()
             self.createMapWithPins()
@@ -101,12 +102,23 @@ class MapViewController : UIViewController, MKMapViewDelegate {
             pinView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: reuseID)
             pinView!.canShowCallout = true
             pinView!.pinTintColor = .red
-            pinView?.rightCalloutAccessoryView = UIButton(type: .detailDisclosure)
+            pinView!.rightCalloutAccessoryView = UIButton(type: .detailDisclosure)
         } else {
             pinView!.annotation = annotation
         }
         
         return pinView
     } // End mapView
+    
+    
+    func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
+        
+        if control == view.rightCalloutAccessoryView {
+            let app = UIApplication.shared
+            if let toOpen = view.annotation?.subtitle! {
+                app.open(URL(string: toOpen)!, options: [:], completionHandler: nil)
+            }
+        }
+    }
     
 } // End MapViewController

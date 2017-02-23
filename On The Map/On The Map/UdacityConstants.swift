@@ -12,11 +12,11 @@ import Foundation
 // MARK: extension for Constants to be used with Udacity Web API
 extension UdacityClient {
     
-    
     // MARK: Udacity Web API address
     struct UdacityConstants {
         static let udacityWebAddress : String = "https://www.udacity.com/api/"
         static let jsonOK : String = "application/json"
+        static let udacitySignupURL = "https://www.udacity.com/account/auth#!/signup"
     }
     
     // MARK: methods from the Udacity Web API

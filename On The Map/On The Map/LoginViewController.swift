@@ -74,5 +74,12 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         
     } // End loginButtonPressed
     
+    @IBAction func signUpButtonPressed(_ sender: Any) {
+        
+        let app = UIApplication.shared
+        app.open(URL(string: UdacityClient.UdacityConstants.udacitySignupURL)!, options: [:], completionHandler: nil)
+    }
+    
+    
 } // End LoginViewController
 
