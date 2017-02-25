@@ -24,9 +24,13 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        
         super.viewWillAppear(animated)
         self.activityIndicator.stopAnimating()
-    }
+        
+        emailTextField.delegate = self
+        passwordTextField.delegate = self
+    } // End viewWillAppear
     
     // ensure textField puts the keyboard away after use
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
