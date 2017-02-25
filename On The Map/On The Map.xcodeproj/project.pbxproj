@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CE55A3E81E60FAFC009E436E /* InformationPostingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE55A3E71E60FAFC009E436E /* InformationPostingViewController.swift */; };
 		CE7917C11E27210000FD3B72 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7917C01E27210000FD3B72 /* AppDelegate.swift */; };
 		CE7917C31E27210000FD3B72 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7917C21E27210000FD3B72 /* LoginViewController.swift */; };
 		CE7917C61E27210000FD3B72 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CE7917C41E27210000FD3B72 /* Main.storyboard */; };
@@ -42,6 +43,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		CE55A3E71E60FAFC009E436E /* InformationPostingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InformationPostingViewController.swift; sourceTree = "<group>"; };
 		CE7917BD1E27210000FD3B72 /* On The Map.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "On The Map.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE7917C01E27210000FD3B72 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CE7917C21E27210000FD3B72 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
@@ -157,6 +159,7 @@
 		CE7917F01E27218E00FD3B72 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				CE55A3E71E60FAFC009E436E /* InformationPostingViewController.swift */,
 				CEB4DBF01E52A34600615EB2 /* StudentLocationTableViewController.swift */,
 				CEB4DBEE1E52A15D00615EB2 /* StudentLocationTableViewCell.swift */,
 				CEF2318A1E2C0E0200DCC574 /* MapViewController.swift */,
@@ -308,6 +311,7 @@
 				CEF2318B1E2C0E0200DCC574 /* MapViewController.swift in Sources */,
 				CEC8544C1E2AB21F0009E663 /* UdacityConstants.swift in Sources */,
 				CEB4DBEF1E52A15D00615EB2 /* StudentLocationTableViewCell.swift in Sources */,
+				CE55A3E81E60FAFC009E436E /* InformationPostingViewController.swift in Sources */,
 				CED48A771E2EB08500363BD0 /* ParseConstants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
