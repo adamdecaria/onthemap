@@ -277,11 +277,11 @@
                                 <rect key="frame" x="0.0" y="212" width="375" height="455"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </mapView>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="FW0-S3-MMN">
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" text="Enter a link to share" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="FW0-S3-MMN">
                                 <rect key="frame" x="0.0" y="64" width="375" height="156"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" red="0.42844462280000001" green="0.64017707960000003" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="32"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="T2g-Sz-Lt7">
@@ -294,10 +294,15 @@
                                     <action selector="submitButtonPressed:" destination="Drg-ON-ZzA" eventType="touchUpInside" id="BLw-3T-P9b"/>
                                 </connections>
                             </button>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="i8o-Kr-kKA">
+                                <rect key="frame" x="177" y="323" width="20" height="20"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <connections>
+                        <outlet property="activityViewIndicator" destination="i8o-Kr-kKA" id="d1t-Z9-GsY"/>
                         <outlet property="findButton" destination="S51-gC-o3i" id="g3G-Gy-iWZ"/>
                         <outlet property="mainTextView" destination="2Sh-WG-cT3" id="WBX-Pz-LIm"/>
                         <outlet property="mapTextView" destination="FW0-S3-MMN" id="p5F-hG-PaM"/>

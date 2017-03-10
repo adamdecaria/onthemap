@@ -75,8 +75,6 @@ class StudentLocationTableViewController: UITableViewController {
         let student = studentList[indexPath.row]
         let studentURL = student.mediaURL
         
-        print(studentURL)
-        
         let app = UIApplication.shared
         app.open(URL(string: studentURL)!, options: [:], completionHandler: nil)
         

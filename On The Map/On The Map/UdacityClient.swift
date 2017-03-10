@@ -73,6 +73,7 @@ class UdacityClient : NSObject {
                 
                 do {
                     parsedResult = try JSONSerialization.jsonObject(with: scrubbedData!, options: .allowFragments) as! [String:AnyObject]
+                    print(parsedResult.keys)
                     let sessionDictionary = parsedResult["session"]
                     self.sessionID = sessionDictionary?["id"] as! String
                 } catch {

@@ -18,6 +18,8 @@ class InformationPostingViewController : UIViewController, MKMapViewDelegate, UI
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var mapTextView: UITextView!
     @IBOutlet weak var submitButton: UIButton!
+    @IBOutlet weak var activityViewIndicator: UIActivityIndicatorView!
+   
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -28,6 +30,8 @@ class InformationPostingViewController : UIViewController, MKMapViewDelegate, UI
         
         userEntryTextField.delegate = self
         mapView.delegate = self
+        
+        activityViewIndicator.hidesWhenStopped = true
         
     } // End viewWillAppear
     
@@ -52,14 +56,22 @@ class InformationPostingViewController : UIViewController, MKMapViewDelegate, UI
         userLocation.geocodeAddressString(userEntryTextField.text, completionHandler: { placemark, error in
             
             guard (error == nil) else {
-                print("There was an error getting user location")
+                let errorMessage = UIAlertController.init(title: "Error", message: "Unable to find that location", preferredStyle: .alert)
+                let okAction = UIAlertAction(title: "OK", style: .default)
+                errorMessage.addAction(okAction)
+                self.present(errorMessage, animated: true)
                 return
             }
             
             let locationData = placemark?[0].location
+            print("Latitude is: ", (locationData?.coordinate.latitude)! as Double)
+            print("Longitude is: ", (locationData?.coordinate.longitude)! as Double)
             let annotation = MKPointAnnotation()
             annotation.coordinate = (locationData?.coordinate)!
+
             self.mapView.addAnnotation(annotation)
+            self.mapView.camera.centerCoordinate = (locationData?.coordinate)!
+            self.mapView.camera.altitude = self.mapView.camera.altitude * 0.2
         })
         
     } // End findButtonPressed
@@ -92,7 +104,17 @@ class InformationPostingViewController : UIViewController, MKMapViewDelegate, UI
     
     @IBAction func submitButtonPressed(_ sender: Any) {
         
-
+        if !mapTextView.hasText {
+            let errorMessage = UIAlertController.init(title: "Forgot Something...", message: "Please enter a URL.", preferredStyle: .alert)
+            
+            let okAction = UIAlertAction(title: "OK", style: .default, handler: { _ in })
+            
+            errorMessage.addAction(okAction)
+            
+            self.present(errorMessage, animated: true)
+        } else {
+            
+        }
     }
     
     
