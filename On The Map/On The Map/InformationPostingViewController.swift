@@ -45,9 +45,11 @@ class InformationPostingViewController : UIViewController, MKMapViewDelegate, UI
     @IBAction func findButtonPressed(_ sender: Any) {
         
         mainTextView.isHidden = true
+        mainTextView.delegate = nil
         userEntryTextField.isHidden = true
         findButton.isHidden = true
         
+        mapTextView.delegate = self
         mapTextView.isHidden = false
         mapView.isHidden = false
         submitButton.isHidden = false
@@ -64,8 +66,9 @@ class InformationPostingViewController : UIViewController, MKMapViewDelegate, UI
             }
             
             let locationData = placemark?[0].location
-            print("Latitude is: ", (locationData?.coordinate.latitude)! as Double)
-            print("Longitude is: ", (locationData?.coordinate.longitude)! as Double)
+            User.sharedUser().latitude = (locationData?.coordinate.latitude)! as Double
+            User.sharedUser().longitude = (locationData?.coordinate.longitude)! as Double
+
             let annotation = MKPointAnnotation()
             annotation.coordinate = (locationData?.coordinate)!
 
@@ -94,8 +97,12 @@ class InformationPostingViewController : UIViewController, MKMapViewDelegate, UI
         return pinView
     } // End mapView
     
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        textView.text = ""
+    }
+    
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
-        
+
         if text == "\n" {
             return textView.resignFirstResponder()
         }
@@ -113,7 +120,9 @@ class InformationPostingViewController : UIViewController, MKMapViewDelegate, UI
             
             self.present(errorMessage, animated: true)
         } else {
-            
+            UdacityClient.sharedInstance().taskForGETSession(methodType: UdacityClient.Methods.users)
+            User.sharedUser().webAddress = User.sharedUser().webAddress + (mapTextView.text)!
+            print(User.sharedUser().webAddress)
         }
     }
     

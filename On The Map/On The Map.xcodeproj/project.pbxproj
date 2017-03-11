@@ -22,6 +22,7 @@
 		CED48A731E2EA45F00363BD0 /* StudentLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED48A721E2EA45F00363BD0 /* StudentLocation.swift */; };
 		CED48A751E2EA7D900363BD0 /* ParseClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED48A741E2EA7D900363BD0 /* ParseClient.swift */; };
 		CED48A771E2EB08500363BD0 /* ParseConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED48A761E2EB08500363BD0 /* ParseConstants.swift */; };
+		CEDE9D561E7386240028D191 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEDE9D551E7386240028D191 /* User.swift */; };
 		CEF2318B1E2C0E0200DCC574 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF2318A1E2C0E0200DCC574 /* MapViewController.swift */; };
 /* End PBXBuildFile section */
 
@@ -64,6 +65,7 @@
 		CED48A721E2EA45F00363BD0 /* StudentLocation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StudentLocation.swift; sourceTree = "<group>"; };
 		CED48A741E2EA7D900363BD0 /* ParseClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParseClient.swift; sourceTree = "<group>"; };
 		CED48A761E2EB08500363BD0 /* ParseConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParseConstants.swift; sourceTree = "<group>"; };
+		CEDE9D551E7386240028D191 /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		CEF2318A1E2C0E0200DCC574 /* MapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -148,6 +150,7 @@
 			isa = PBXGroup;
 			children = (
 				CED48A721E2EA45F00363BD0 /* StudentLocation.swift */,
+				CEDE9D551E7386240028D191 /* User.swift */,
 				CED48A741E2EA7D900363BD0 /* ParseClient.swift */,
 				CE7917F11E27280100FD3B72 /* UdacityClient.swift */,
 				CEC8544B1E2AB21F0009E663 /* UdacityConstants.swift */,
@@ -310,6 +313,7 @@
 				CEB4DBF11E52A34600615EB2 /* StudentLocationTableViewController.swift in Sources */,
 				CEF2318B1E2C0E0200DCC574 /* MapViewController.swift in Sources */,
 				CEC8544C1E2AB21F0009E663 /* UdacityConstants.swift in Sources */,
+				CEDE9D561E7386240028D191 /* User.swift in Sources */,
 				CEB4DBEF1E52A15D00615EB2 /* StudentLocationTableViewCell.swift in Sources */,
 				CE55A3E81E60FAFC009E436E /* InformationPostingViewController.swift in Sources */,
 				CED48A771E2EB08500363BD0 /* ParseConstants.swift in Sources */,
