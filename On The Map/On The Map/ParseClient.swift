@@ -66,38 +66,126 @@ class ParseClient : NSObject {
         }
         task.resume()
     } // End taskForGETMethod
-    /*
-    func taskForPOSTSession(methodType: String, student: StudentLocation, completionHandler: @escaping (_ error: String?) -> Void) {
+    
+    func taskForPOSTStudent(completionHandler: @escaping (_ error: String?) -> Void) {
         
-        let request = NSMutableURLRequest(url: URL(string: (ParseConstants.parseWebAddress + methodType))!)
+        print("Starting taskForPOSTStudent")
+        
+        let request = NSMutableURLRequest(url: URL(string: (ParseConstants.parseWebAddress))!)
         
         request.httpMethod = "POST"
-        request.addValue(ParseConstants.jsonOK, forHTTPHeaderField: "Accept")
+        request.addValue(ParseClient.ParseAPIRequired.parseApplicationID, forHTTPHeaderField: "X-Parse-Application-Id")
+        request.addValue(ParseClient.ParseAPIRequired.parseAPIKey, forHTTPHeaderField: "X-Parse-REST-API-Key")
         request.addValue(ParseConstants.jsonOK, forHTTPHeaderField: "Content-Type")
-       // request.httpBody = "{\"uniqueKey\": \"1234\", \"firstName\": \"John\", \"lastName\": \"Doe\",\"mapString\": \"Mountain View, CA\", \"mediaURL\": \"https://udacity.com\",\"latitude\": 37.386052, \"longitude\": -122.083851}".data(using: String.Encoding.utf8)
+        request.httpBody = "{\"uniqueKey\": \(User.sharedUser().uniqueKey), \"firstName\": \(User.sharedUser().firstName), \"lastName\": \(User.sharedUser().lastName),\"mapString\": \(User.sharedUser().mapString), \"mediaURL\": \(User.sharedUser().webAddress),\"latitude\": \(User.sharedUser().latitude), \"longitude\": \(User.sharedUser().longitude)}".data(using: String.Encoding.utf8)
+
+        print(User.sharedUser().firstName, User.sharedUser().firstName, User.sharedUser().mapString, User.sharedUser().webAddress, User.sharedUser().latitude)
         
-        
-        
-        
-        
-        /*
-        let request = NSMutableURLRequest(url: URL(string: "https://parse.udacity.com/parse/classes/StudentLocation")!)
-        request.httpMethod = "POST"
-        request.addValue("QrX47CA9cyuGewLdsL7o5Eb8iug6Em8ye0dnAbIr", forHTTPHeaderField: "X-Parse-Application-Id")
-        request.addValue("QuWThTdiRmTux3YaDseUSEpUKo7aBYM737yKd4gY", forHTTPHeaderField: "X-Parse-REST-API-Key")
-        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.httpBody = "{\"uniqueKey\": \"1234\", \"firstName\": \"John\", \"lastName\": \"Doe\",\"mapString\": \"Mountain View, CA\", \"mediaURL\": \"https://udacity.com\",\"latitude\": 37.386052, \"longitude\": -122.083851}".data(using: String.Encoding.utf8)
-        let session = URLSession.shared
-        let task = session.dataTask(with: request as URLRequest) { data, response, error in
-            if error != nil { // Handle error…
+        let task = self.session.dataTask(with: request as URLRequest) { data, response, error in
+            
+            func errorHandler(_ error: String) {
+                print(error)
+                completionHandler(error)
+            }
+            
+            guard (error == nil) else {
+                errorHandler(error as! String)
                 return
             }
-            print(NSString(data: data!, encoding: String.Encoding.utf8.rawValue)!)
+            
+            guard let statusCode = (response as? HTTPURLResponse)?.statusCode, statusCode >= 200 && statusCode <= 299 else {
+                let errorString = (response as? HTTPURLResponse)?.statusCode.description
+                print(errorString!)
+                errorHandler("Bad response from the server.")
+                return
+            }
+            
+            let range = Range(uncheckedBounds: (5, data!.count))
+            let scrubbedData = data?.subdata(in: range)
+            
+            var parsedResult : [String:AnyObject]!
+            
+            DispatchQueue.global(qos: .userInitiated).async {
+                
+                do {
+                    parsedResult = try JSONSerialization.jsonObject(with: scrubbedData!, options: .allowFragments) as! [String:AnyObject]
+                    
+                    let studentCreated = parsedResult["createdAt"] as! String
+                    print(studentCreated)
+                } catch {
+                    print("Created Student")
+                }
+            }
+            
+            DispatchQueue.main.async {
+                completionHandler(nil)
+            }
+        }
+        
+        task.resume()
+ 
+    } // End taskForPOSTStudent
+    
+    func taskForGETSession() {
+
+        print("Starting taskForGETSession")
+        
+        let string = ParseConstants.parseWebAddress
+        let request = NSMutableURLRequest(url: URL(string: ("\(ParseConstants.parseWebAddress)?where={\"uniqueKey\":\"\(User.sharedUser().uniqueKey)\"}"))!)
+        
+        request.addValue(ParseAPIRequired.parseApplicationID, forHTTPHeaderField: "X-Parse-Application-Id")
+        request.addValue(ParseAPIRequired.parseAPIKey, forHTTPHeaderField: "X-Parse-REST-API-Key")
+        request.addValue(ParseConstants.jsonOK, forHTTPHeaderField: "Accept")
+        request.addValue(ParseConstants.jsonOK, forHTTPHeaderField: "Content-Type")
+        
+
+        let task = self.session.dataTask(with: request as URLRequest) { data, response, error in
+            
+            print("started task")
+            
+            func errorHandler(_ error: String) {
+                print("there was an error: " + error)
+            }
+            
+            guard (error == nil) else {
+                errorHandler(error as! String)
+                return
+            }
+            
+            /* GUARD: Ensure a successful 2XX response was received */
+            guard let statusCode = (response as? HTTPURLResponse)?.statusCode, statusCode >= 200 && statusCode <= 299 else {
+                errorHandler("Bad response from the server.")
+                return
+            }
+            
+            /*
+            let range = Range(uncheckedBounds: (5, data!.count))
+            let scrubbedData = data?.subdata(in: range)
+            */
+            //print(NSString(data: data!, encoding: String.Encoding.utf8.rawValue)!)
+            
+            var parsedResult : [String:AnyObject]!
+            
+            DispatchQueue.global(qos: .userInitiated).async {
+                
+                do {
+                    parsedResult = try JSONSerialization.jsonObject(with: data!, options: .allowFragments) as! [String:AnyObject]
+                    
+                    let userDictionary = parsedResult["results"] as! [String:AnyObject]
+                    print(userDictionary)
+                    User.sharedUser().firstName = userDictionary["firstName"] as! String
+                    User.sharedUser().lastName = userDictionary["lastName"] as! String
+                    
+                } catch {
+                    print("Error with the JSON data")
+                }
+            }
         }
         task.resume()
- */
-    }
-    */
+    } // End taskForGETSession
+
+        
+ 
     func shareStudentList() -> [StudentLocation] {
         return self.studentList
     } // End shareStudentList

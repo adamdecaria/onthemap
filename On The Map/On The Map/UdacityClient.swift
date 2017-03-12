@@ -72,8 +72,7 @@ class UdacityClient : NSObject {
                 
                 do {
                     parsedResult = try JSONSerialization.jsonObject(with: scrubbedData!, options: .allowFragments) as! [String:AnyObject]
-                    
-                    print(parsedResult)
+                  
                     let sessionDictionary = parsedResult["session"]
                     self.sessionID = sessionDictionary?["id"] as! String
                     
@@ -151,60 +150,6 @@ class UdacityClient : NSObject {
         task.resume()
         
     } // End taskForPOSTDeleteSession
-    
-    func taskForGETSession(methodType: String) {
-        
-        let request = NSMutableURLRequest(url: URL(string: (UdacityConstants.udacityWebAddress + methodType + "/" + User.sharedUser().uniqueKey))!)
-        print(request)
-        request.httpMethod = "GET"
-      
-        
-        let task = self.session.dataTask(with: request as URLRequest) { data, response, error in
-            
-            /*
-            func errorHandler(_ error: String) {
-                print(error)
-                completionHandler(error)
-            }
-            */
-            /*
-            guard (error == nil) else {
-                errorHandler(error as! String)
-                return
-            }
-            
-            /* GUARD: Ensure a successful 2XX response was received */
-            guard let statusCode = (response as? HTTPURLResponse)?.statusCode, statusCode >= 200 && statusCode <= 299 else {
-                errorHandler("Bad response from the server.  Check username/password.")
-                return
-            }
-            */
-            let range = Range(uncheckedBounds: (5, data!.count))
-            let scrubbedData = data?.subdata(in: range)
-            
-            //print(NSString(data: scrubbedData!, encoding: String.Encoding.utf8.rawValue)!)
-            
-            var parsedResult : [String:AnyObject]!
-            
-            DispatchQueue.global(qos: .userInitiated).async {
-                
-                do {
-                    parsedResult = try JSONSerialization.jsonObject(with: scrubbedData!, options: .allowFragments) as! [String:AnyObject]
-                    
-                    let userDictionary = parsedResult["user"] as! [String:AnyObject]
-                    User.sharedUser().firstName = userDictionary["nickname"] as! String
-                    User.sharedUser().lastName = userDictionary["last_name"] as! String
-                    
-                    print(User.sharedUser().firstName)
-                    print(User.sharedUser().lastName)
-                    
-                } catch {
-                    print("Error with the JSON data")
-                }
-            }
-        }
-        task.resume()
-    } // End taskForGETSession
     
     
     // Singleton pattern for a shared UdacityClient instance across the app

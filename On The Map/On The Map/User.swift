@@ -16,6 +16,7 @@ class User : NSObject {
     var firstName = ""
     var lastName = ""
     
+    var mapString = ""
     var latitude = 0.0
     var longitude = 0.0
     

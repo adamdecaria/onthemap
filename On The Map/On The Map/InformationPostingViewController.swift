@@ -68,6 +68,8 @@ class InformationPostingViewController : UIViewController, MKMapViewDelegate, UI
             let locationData = placemark?[0].location
             User.sharedUser().latitude = (locationData?.coordinate.latitude)! as Double
             User.sharedUser().longitude = (locationData?.coordinate.longitude)! as Double
+            
+            User.sharedUser().mapString = self.mainTextView.text
 
             let annotation = MKPointAnnotation()
             annotation.coordinate = (locationData?.coordinate)!
@@ -120,11 +122,10 @@ class InformationPostingViewController : UIViewController, MKMapViewDelegate, UI
             
             self.present(errorMessage, animated: true)
         } else {
-            UdacityClient.sharedInstance().taskForGETSession(methodType: UdacityClient.Methods.users)
-            User.sharedUser().webAddress = User.sharedUser().webAddress + (mapTextView.text)!
-            print(User.sharedUser().webAddress)
+            ParseClient.sharedInstance().taskForGETSession()
         }
-    }
+ 
+    } // End submitButtonPressed
     
     
 } // End InformationPostingViewController
