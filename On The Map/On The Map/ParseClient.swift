@@ -67,9 +67,13 @@ class ParseClient : NSObject {
         task.resume()
     } // End taskForGETMethod
     
-    func taskForPOSTStudent(completionHandler: @escaping (_ error: String?) -> Void) {
+    func taskForPOSTStudent() {
         
         print("Starting taskForPOSTStudent")
+        print("Key: " + User.sharedUser().uniqueKey)
+        print("First name: " + User.sharedUser().firstName)
+        print("Last name: " + User.sharedUser().lastName)
+        print("URL: " + User.sharedUser().webAddress)
         
         let request = NSMutableURLRequest(url: URL(string: (ParseConstants.parseWebAddress))!)
         
@@ -77,15 +81,13 @@ class ParseClient : NSObject {
         request.addValue(ParseClient.ParseAPIRequired.parseApplicationID, forHTTPHeaderField: "X-Parse-Application-Id")
         request.addValue(ParseClient.ParseAPIRequired.parseAPIKey, forHTTPHeaderField: "X-Parse-REST-API-Key")
         request.addValue(ParseConstants.jsonOK, forHTTPHeaderField: "Content-Type")
-        request.httpBody = "{\"uniqueKey\": \(User.sharedUser().uniqueKey), \"firstName\": \(User.sharedUser().firstName), \"lastName\": \(User.sharedUser().lastName),\"mapString\": \(User.sharedUser().mapString), \"mediaURL\": \(User.sharedUser().webAddress),\"latitude\": \(User.sharedUser().latitude), \"longitude\": \(User.sharedUser().longitude)}".data(using: String.Encoding.utf8)
+        request.httpBody = "{\"uniqueKey\": \"\(User.sharedUser().uniqueKey)\", \"firstName\": \"\(User.sharedUser().firstName)\", \"lastName\": \"\(User.sharedUser().lastName)\",\"mapString\": \"\(User.sharedUser().mapString)\", \"mediaURL\": \"\(User.sharedUser().webAddress)\",\"latitude\": \(User.sharedUser().latitude), \"longitude\": \(User.sharedUser().longitude)}".data(using: String.Encoding(rawValue: String.Encoding.utf8.rawValue))
 
-        print(User.sharedUser().firstName, User.sharedUser().firstName, User.sharedUser().mapString, User.sharedUser().webAddress, User.sharedUser().latitude)
         
         let task = self.session.dataTask(with: request as URLRequest) { data, response, error in
             
             func errorHandler(_ error: String) {
                 print(error)
-                completionHandler(error)
             }
             
             guard (error == nil) else {
@@ -99,27 +101,22 @@ class ParseClient : NSObject {
                 errorHandler("Bad response from the server.")
                 return
             }
-            
-            let range = Range(uncheckedBounds: (5, data!.count))
-            let scrubbedData = data?.subdata(in: range)
+
             
             var parsedResult : [String:AnyObject]!
             
             DispatchQueue.global(qos: .userInitiated).async {
                 
                 do {
-                    parsedResult = try JSONSerialization.jsonObject(with: scrubbedData!, options: .allowFragments) as! [String:AnyObject]
+                    parsedResult = try JSONSerialization.jsonObject(with: data!, options: .allowFragments) as! [String:AnyObject]
                     
                     let studentCreated = parsedResult["createdAt"] as! String
                     print(studentCreated)
                 } catch {
-                    print("Created Student")
+                    print("There was an error creating the student.")
                 }
             }
             
-            DispatchQueue.main.async {
-                completionHandler(nil)
-            }
         }
         
         task.resume()
@@ -130,15 +127,26 @@ class ParseClient : NSObject {
 
         print("Starting taskForGETSession")
         
-        let string = ParseConstants.parseWebAddress
-        let request = NSMutableURLRequest(url: URL(string: ("\(ParseConstants.parseWebAddress)?where={\"uniqueKey\":\"\(User.sharedUser().uniqueKey)\"}"))!)
+        var urlComponents = URLComponents()
+        urlComponents.scheme = "https"
+        urlComponents.host = "parse.udacity.com"
+        urlComponents.path = "/parse/classes/StudentLocation"
+        urlComponents.queryItems = [URLQueryItem]()
         
+        let queryItemOne = URLQueryItem(name: "where", value: "\"uniqueKey\"\"\(User.sharedUser().uniqueKey)\"")
+        
+        urlComponents.queryItems?.append(queryItemOne)
+        
+        print(urlComponents.url!)
+        
+        let request = NSMutableURLRequest(url: urlComponents.url!)
+        
+        request.httpMethod = "GET"
         request.addValue(ParseAPIRequired.parseApplicationID, forHTTPHeaderField: "X-Parse-Application-Id")
         request.addValue(ParseAPIRequired.parseAPIKey, forHTTPHeaderField: "X-Parse-REST-API-Key")
-        request.addValue(ParseConstants.jsonOK, forHTTPHeaderField: "Accept")
         request.addValue(ParseConstants.jsonOK, forHTTPHeaderField: "Content-Type")
+ 
         
-
         let task = self.session.dataTask(with: request as URLRequest) { data, response, error in
             
             print("started task")
@@ -158,12 +166,6 @@ class ParseClient : NSObject {
                 return
             }
             
-            /*
-            let range = Range(uncheckedBounds: (5, data!.count))
-            let scrubbedData = data?.subdata(in: range)
-            */
-            //print(NSString(data: data!, encoding: String.Encoding.utf8.rawValue)!)
-            
             var parsedResult : [String:AnyObject]!
             
             DispatchQueue.global(qos: .userInitiated).async {
@@ -182,6 +184,7 @@ class ParseClient : NSObject {
             }
         }
         task.resume()
+ 
     } // End taskForGETSession
 
         

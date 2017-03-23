@@ -78,6 +78,7 @@ class MapViewController : UIViewController, MKMapViewDelegate {
             let firstName = element.firstName
             let lastName = element.lastName
     
+            
             let mediaURL = element.mediaURL
             
             let annotation = MKPointAnnotation()

@@ -70,6 +70,7 @@ class InformationPostingViewController : UIViewController, MKMapViewDelegate, UI
             User.sharedUser().longitude = (locationData?.coordinate.longitude)! as Double
             
             User.sharedUser().mapString = self.mainTextView.text
+            User.sharedUser().webAddress = self.mapTextView.text
 
             let annotation = MKPointAnnotation()
             annotation.coordinate = (locationData?.coordinate)!
@@ -123,6 +124,7 @@ class InformationPostingViewController : UIViewController, MKMapViewDelegate, UI
             self.present(errorMessage, animated: true)
         } else {
             ParseClient.sharedInstance().taskForGETSession()
+            ParseClient.sharedInstance().taskForPOSTStudent()
         }
  
     } // End submitButtonPressed
