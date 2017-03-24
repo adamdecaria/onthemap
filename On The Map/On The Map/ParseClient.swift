@@ -116,14 +116,13 @@ class ParseClient : NSObject {
                     print("There was an error creating the student.")
                 }
             }
-            
         }
         
         task.resume()
  
     } // End taskForPOSTStudent
     
-    func taskForGETSession() {
+    func taskForGETSession(completionHandler: @escaping () -> Void) {
 
         print("Starting taskForGETSession")
         
@@ -133,7 +132,8 @@ class ParseClient : NSObject {
         urlComponents.path = "/parse/classes/StudentLocation"
         urlComponents.queryItems = [URLQueryItem]()
         
-        let queryItemOne = URLQueryItem(name: "where", value: "\"uniqueKey\"\"\(User.sharedUser().uniqueKey)\"")
+        let queryItemOne = URLQueryItem(name: "where", value: "\"uniqueKey\":\"\(User.sharedUser().uniqueKey)\"")
+        print(queryItemOne)
         
         urlComponents.queryItems?.append(queryItemOne)
         
@@ -181,6 +181,10 @@ class ParseClient : NSObject {
                 } catch {
                     print("Error with the JSON data")
                 }
+            }
+            
+            DispatchQueue.main.async {
+                completionHandler()
             }
         }
         task.resume()

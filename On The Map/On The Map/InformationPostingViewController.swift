@@ -123,8 +123,7 @@ class InformationPostingViewController : UIViewController, MKMapViewDelegate, UI
             
             self.present(errorMessage, animated: true)
         } else {
-            ParseClient.sharedInstance().taskForGETSession()
-            ParseClient.sharedInstance().taskForPOSTStudent()
+            ParseClient.sharedInstance().taskForGETSession(completionHandler: { _ in ParseClient.sharedInstance().taskForPOSTStudent() })
         }
  
     } // End submitButtonPressed
