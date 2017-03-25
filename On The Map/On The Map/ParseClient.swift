@@ -125,28 +125,28 @@ class ParseClient : NSObject {
     func taskForGETSession(completionHandler: @escaping () -> Void) {
 
         print("Starting taskForGETSession")
-        /*
+        
         var urlComponents = URLComponents()
         urlComponents.scheme = "https"
         urlComponents.host = "parse.udacity.com"
-        urlComponents.path = "/parse/classes/StudentLocation?where="
-        //urlComponents.queryItems = [URLQueryItem]()
-        */
-        /*
-        let queryItemOne = URLQueryItem(name: "where", value: "\"uniqueKey\":\"\(User.sharedUser().uniqueKey)\"")
+        urlComponents.path = "/parse/classes/StudentLocation"
+        urlComponents.queryItems = [URLQueryItem]()
+        
+        
+        let queryItemOne = URLQueryItem(name: "where", value: "{\"uniqueKey\":\"\(User.sharedUser().uniqueKey)\"}")
         print(queryItemOne)
         
         urlComponents.queryItems?.append(queryItemOne)
         
         print(urlComponents.url!)
-        */
-        let request = NSMutableURLRequest(url: URL(string: ParseConstants.parseWebAddress + "?where=")!)
+
+        let request = NSMutableURLRequest(url: urlComponents.url!)
+
         
         request.httpMethod = "GET"
         request.addValue(ParseAPIRequired.parseApplicationID, forHTTPHeaderField: "X-Parse-Application-Id")
         request.addValue(ParseAPIRequired.parseAPIKey, forHTTPHeaderField: "X-Parse-REST-API-Key")
-        request.addValue(ParseConstants.jsonOK, forHTTPHeaderField: "Content-Type")
-        request.httpBody = "{\"uniqueKey\":\"\(User.sharedUser().uniqueKey)\"}".data(using: String.Encoding.utf8)
+  
     
         let task = self.session.dataTask(with: request as URLRequest) { data, response, error in
             
@@ -174,17 +174,15 @@ class ParseClient : NSObject {
                 do {
                     parsedResult = try JSONSerialization.jsonObject(with: data!, options: .allowFragments) as! [String:AnyObject]
                     
-                    let userDictionary = parsedResult["results"] as! [String:AnyObject]
-                    print("This is the user dictionary:" + userDictionary.description)
+                    let userArray = parsedResult["results"] as! [AnyObject]
+                    let userDictionary = userArray[0]
+                    
                     User.sharedUser().firstName = userDictionary["firstName"] as! String
                     User.sharedUser().lastName = userDictionary["lastName"] as! String
-                    
+    
                 } catch {
                     print("Error with the JSON data")
                 }
-            }
-            
-            DispatchQueue.main.async {
                 completionHandler()
             }
         }

@@ -123,6 +123,7 @@ class InformationPostingViewController : UIViewController, MKMapViewDelegate, UI
             
             self.present(errorMessage, animated: true)
         } else {
+            User.sharedUser().webAddress = "http://\(mapTextView.text)"
             ParseClient.sharedInstance().taskForGETSession(completionHandler: { _ in ParseClient.sharedInstance().taskForPOSTStudent() })
         }
  
