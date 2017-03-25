@@ -174,6 +174,8 @@ class ParseClient : NSObject {
                 do {
                     parsedResult = try JSONSerialization.jsonObject(with: data!, options: .allowFragments) as! [String:AnyObject]
                     
+                    /* JSON data comes back as an array; getting the array first and then pulling the dictionary to get 
+                        the user data */
                     let userArray = parsedResult["results"] as! [AnyObject]
                     let userDictionary = userArray[0]
                     

@@ -74,7 +74,7 @@
                                 </connections>
                             </button>
                         </subviews>
-                        <color key="backgroundColor" red="0.14339801460000001" green="0.77810069800000004" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <connections>
                         <outlet property="activityIndicator" destination="4H5-kW-Y9r" id="Mms-E2-k9z"/>
@@ -123,7 +123,7 @@
                             </barButtonItem>
                             <barButtonItem title="Item" image="pin" id="alJ-AA-Khf">
                                 <connections>
-                                    <segue destination="Drg-ON-ZzA" kind="presentation" id="Z5g-kX-uL8"/>
+                                    <segue destination="33E-WI-vwC" kind="presentation" id="fi5-hw-MhS"/>
                                 </connections>
                             </barButtonItem>
                         </rightBarButtonItems>
@@ -135,7 +135,95 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HNr-kR-dYI" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="860" y="-297.30134932533736"/>
+            <point key="canvasLocation" x="886" y="-314"/>
+        </scene>
+        <!--Add Location-->
+        <scene sceneID="h8z-Lz-kGx">
+            <objects>
+                <viewController id="QvC-oM-FzY" customClass="AddLocation" customModule="On_The_Map" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="g6U-4r-5th"/>
+                        <viewControllerLayoutGuide type="bottom" id="0u6-XK-kuU"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Ky8-jr-hDQ">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter a Location" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="CVJ-uH-QkV">
+                                <rect key="frame" x="74" y="221" width="226" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter a Website" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="1XD-Bw-dms">
+                                <rect key="frame" x="74" y="289" width="226" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cC9-07-tZW">
+                                <rect key="frame" x="74" y="372" width="226" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="0.42844462280000001" green="0.64017707960000003" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <state key="normal" title="FIND LOCATION">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="findLocationButtonPressed:" destination="QvC-oM-FzY" eventType="touchUpInside" id="hDZ-kb-Aub"/>
+                                    <segue destination="pzk-F0-ppE" kind="presentation" id="9HJ-ya-Jnj"/>
+                                </connections>
+                            </button>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="PinOnWorld" translatesAutoresizingMaskIntoConstraints="NO" id="mbH-Ea-Vg5">
+                                <rect key="frame" x="144" y="81" width="86" height="102"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
+                            <navigationBar contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="pAQ-Ns-DsE">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                <items>
+                                    <navigationItem title="Add Location" id="5uw-78-ADP"/>
+                                </items>
+                            </navigationBar>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="Add Location" id="Eui-bD-HdW">
+                        <barButtonItem key="leftBarButtonItem" title="Cancel" id="nYY-fc-QMe">
+                            <connections>
+                                <action selector="cancelButtonPressed:" destination="QvC-oM-FzY" id="j5N-gx-Hhz"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="cancelButton" destination="nYY-fc-QMe" id="fHx-7b-ePb"/>
+                        <outlet property="cancelButtonPressed" destination="nYY-fc-QMe" id="zzv-6T-prd"/>
+                        <outlet property="enterLocationTextField" destination="CVJ-uH-QkV" id="uDu-X9-qaq"/>
+                        <outlet property="findLocationButton" destination="cC9-07-tZW" id="Atu-sG-MTN"/>
+                        <outlet property="locationTextField" destination="CVJ-uH-QkV" id="i4Z-C7-wJ3"/>
+                        <outlet property="websiteTextField" destination="1XD-Bw-dms" id="1CP-hh-Aav"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="5t6-Wv-n8j" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2458" y="54"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="ndu-Xf-9PC">
+            <objects>
+                <navigationController id="33E-WI-vwC" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="66c-9H-gdc">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="QvC-oM-FzY" kind="relationship" relationship="rootViewController" id="qQG-fT-Kej"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dGC-8a-xzY" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1750" y="55"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="VrW-JX-kpr">
@@ -176,14 +264,14 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="q1i-uf-91x">
-                                            <rect key="frame" x="62" y="0.0" width="298" height="65"/>
+                                            <rect key="frame" x="54" y="0.0" width="306" height="65"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" image="pin" id="jbz-58-EFS">
-                                            <rect key="frame" x="15" y="16" width="32" height="32"/>
+                                            <rect key="frame" x="15" y="20" width="24" height="24"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </imageView>
                                     </subviews>
@@ -209,7 +297,7 @@
                             </barButtonItem>
                             <barButtonItem image="pin" id="pfD-FZ-ZXY">
                                 <connections>
-                                    <segue destination="Drg-ON-ZzA" kind="presentation" id="NS5-3Q-Gmv"/>
+                                    <segue destination="33E-WI-vwC" kind="presentation" id="OG4-eQ-msB"/>
                                 </connections>
                             </barButtonItem>
                         </rightBarButtonItems>
@@ -221,99 +309,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Qmn-yn-lfe" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="885.60000000000002" y="389.95502248875567"/>
-        </scene>
-        <!--Information Posting View Controller-->
-        <scene sceneID="Sbc-HQ-RJf">
-            <objects>
-                <viewController id="Drg-ON-ZzA" customClass="InformationPostingViewController" customModule="On_The_Map" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="sej-l3-ufH"/>
-                        <viewControllerLayoutGuide type="bottom" id="3at-Qt-xv4"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="5EK-bW-wZc">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <navigationBar contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Nxe-2G-rO6">
-                                <rect key="frame" x="0.0" y="20" width="375" height="44"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                                <color key="barTintColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                                <items>
-                                    <navigationItem id="JWj-zw-98d">
-                                        <barButtonItem key="rightBarButtonItem" systemItem="cancel" id="ErY-eD-Lnl">
-                                            <connections>
-                                                <action selector="cancelButtonPressed:" destination="Drg-ON-ZzA" id="BpZ-Bt-Qpx"/>
-                                            </connections>
-                                        </barButtonItem>
-                                    </navigationItem>
-                                </items>
-                            </navigationBar>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" editable="NO" text="Where are you studying today?" textAlignment="center" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2Sh-WG-cT3">
-                                <rect key="frame" x="0.0" y="64" width="375" height="224"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                                <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="58"/>
-                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                            </textView>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="S51-gC-o3i">
-                                <rect key="frame" x="70" y="598" width="234" height="49"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="24"/>
-                                <state key="normal" title="Find on the Map"/>
-                                <connections>
-                                    <action selector="findButtonPressed:" destination="Drg-ON-ZzA" eventType="touchUpInside" id="7ya-fo-fOj"/>
-                                </connections>
-                            </button>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" delaysContentTouches="NO" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="WFw-np-dyb">
-                                <rect key="frame" x="0.0" y="281" width="375" height="260"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" red="0.31547566978107144" green="0.60666148878441106" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="19"/>
-                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                            </textView>
-                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="WEE-nV-C8T">
-                                <rect key="frame" x="0.0" y="212" width="375" height="455"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            </mapView>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" text="Enter a link to share" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="FW0-S3-MMN">
-                                <rect key="frame" x="0.0" y="64" width="375" height="156"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" red="0.42844462280000001" green="0.64017707960000003" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="32"/>
-                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                            </textView>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="T2g-Sz-Lt7">
-                                <rect key="frame" x="155" y="607" width="65" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Submit">
-                                    <color key="titleShadowColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="submitButtonPressed:" destination="Drg-ON-ZzA" eventType="touchUpInside" id="BLw-3T-P9b"/>
-                                </connections>
-                            </button>
-                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="i8o-Kr-kKA">
-                                <rect key="frame" x="177" y="323" width="20" height="20"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            </activityIndicatorView>
-                        </subviews>
-                        <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                    </view>
-                    <connections>
-                        <outlet property="activityViewIndicator" destination="i8o-Kr-kKA" id="d1t-Z9-GsY"/>
-                        <outlet property="findButton" destination="S51-gC-o3i" id="g3G-Gy-iWZ"/>
-                        <outlet property="mainTextView" destination="2Sh-WG-cT3" id="WBX-Pz-LIm"/>
-                        <outlet property="mapTextView" destination="FW0-S3-MMN" id="p5F-hG-PaM"/>
-                        <outlet property="mapView" destination="WEE-nV-C8T" id="5re-eP-QUF"/>
-                        <outlet property="submitButton" destination="T2g-Sz-Lt7" id="kZO-Ms-5oj"/>
-                        <outlet property="userEntryTextField" destination="WFw-np-dyb" id="ijD-AR-1pF"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="6XH-Up-2Bl" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1749.5999999999999" y="43.628185907046479"/>
         </scene>
         <!--List-->
         <scene sceneID="i4Y-ha-m4l">
@@ -353,14 +348,55 @@
             </objects>
             <point key="canvasLocation" x="-79.200000000000003" y="-297.30134932533736"/>
         </scene>
+        <!--Add Location-->
+        <scene sceneID="ULx-63-HtX">
+            <objects>
+                <viewController storyboardIdentifier="LocationFinderViewController" id="pzk-F0-ppE" customClass="LocationFinderViewController" customModule="On_The_Map" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="s3Q-dj-wYW"/>
+                        <viewControllerLayoutGuide type="bottom" id="HKM-wH-ksm"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="sG4-25-eH1" customClass="LocationFinderViewController">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <navigationBar contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5Az-SW-Oxq">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                <items>
+                                    <navigationItem title="Add Location" id="jXA-ev-CWV"/>
+                                </items>
+                            </navigationBar>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="EyN-zm-11y">
+                                <rect key="frame" x="0.0" y="44" width="375" height="625"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </mapView>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0MJ-eG-GkA">
+                                <rect key="frame" x="16" y="585" width="343" height="48"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="0.42844462280000001" green="0.64017707960000003" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <state key="normal" title="Find Location">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="Add Location" id="haH-Q7-THd"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="QoF-wO-Iak" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3220" y="53.523238380809602"/>
+        </scene>
     </scenes>
     <resources>
-        <image name="LaunchLogo" width="80" height="80"/>
-        <image name="list" width="32" height="32"/>
-        <image name="map" width="32" height="32"/>
-        <image name="pin" width="32" height="32"/>
+        <image name="LaunchLogo" width="62" height="62"/>
+        <image name="PinOnWorld" width="52" height="67"/>
+        <image name="list" width="75" height="50"/>
+        <image name="map" width="75" height="50"/>
+        <image name="pin" width="24" height="24"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="Z5g-kX-uL8"/>
+        <segue reference="OG4-eQ-msB"/>
     </inferredMetricsTieBreakers>
 </document>

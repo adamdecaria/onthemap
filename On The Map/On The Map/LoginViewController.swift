@@ -26,6 +26,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     override func viewWillAppear(_ animated: Bool) {
         
         super.viewWillAppear(animated)
+        self.activityIndicator.color = UIColor.darkGray
         self.activityIndicator.stopAnimating()
         
         emailTextField.delegate = self
