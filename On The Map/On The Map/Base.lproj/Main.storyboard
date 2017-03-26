@@ -123,7 +123,7 @@
                             </barButtonItem>
                             <barButtonItem title="Item" image="pin" id="alJ-AA-Khf">
                                 <connections>
-                                    <segue destination="33E-WI-vwC" kind="presentation" id="fi5-hw-MhS"/>
+                                    <segue destination="QvC-oM-FzY" kind="presentation" id="NnC-t3-7vd"/>
                                 </connections>
                             </barButtonItem>
                         </rightBarButtonItems>
@@ -140,7 +140,7 @@
         <!--Add Location-->
         <scene sceneID="h8z-Lz-kGx">
             <objects>
-                <viewController id="QvC-oM-FzY" customClass="AddLocation" customModule="On_The_Map" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="QvC-oM-FzY" customClass="InformationPostingViewController" customModule="On_The_Map" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="g6U-4r-5th"/>
                         <viewControllerLayoutGuide type="bottom" id="0u6-XK-kuU"/>
@@ -157,24 +157,12 @@
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter a Website" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="1XD-Bw-dms">
-                                <rect key="frame" x="74" y="289" width="226" height="30"/>
+                                <rect key="frame" x="74" y="259" width="226" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cC9-07-tZW">
-                                <rect key="frame" x="74" y="372" width="226" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" red="0.42844462280000001" green="0.64017707960000003" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <state key="normal" title="FIND LOCATION">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="findLocationButtonPressed:" destination="QvC-oM-FzY" eventType="touchUpInside" id="hDZ-kb-Aub"/>
-                                    <segue destination="pzk-F0-ppE" kind="presentation" id="9HJ-ya-Jnj"/>
-                                </connections>
-                            </button>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="PinOnWorld" translatesAutoresizingMaskIntoConstraints="NO" id="mbH-Ea-Vg5">
                                 <rect key="frame" x="144" y="81" width="86" height="102"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -183,47 +171,63 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                 <items>
-                                    <navigationItem title="Add Location" id="5uw-78-ADP"/>
+                                    <navigationItem title="Add Location" id="5uw-78-ADP">
+                                        <barButtonItem key="leftBarButtonItem" title="Cancel" id="ODk-jZ-wEA">
+                                            <connections>
+                                                <action selector="cancelButtonPressed:" destination="QvC-oM-FzY" id="hOs-Wo-VML"/>
+                                            </connections>
+                                        </barButtonItem>
+                                    </navigationItem>
                                 </items>
                             </navigationBar>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cC9-07-tZW">
+                                <rect key="frame" x="74" y="318" width="226" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="0.42844462280000001" green="0.64017707960000003" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <state key="normal" title="FIND LOCATION">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="findLocationButtonPressed:" destination="QvC-oM-FzY" eventType="touchUpInside" id="hDZ-kb-Aub"/>
+                                </connections>
+                            </button>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="gqk-7i-7xJ">
+                                <rect key="frame" x="0.0" y="44" width="375" height="623"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </mapView>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pWv-mi-rbI">
+                                <rect key="frame" x="74" y="602" width="226" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="0.42844462280000001" green="0.64017707960000003" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <state key="normal" title="SUBMIT LOCATION">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="findLocationButtonPressed:" destination="QvC-oM-FzY" eventType="touchUpInside" id="7Xh-yG-z7u"/>
+                                    <action selector="submitLocationButtonPressed:" destination="QvC-oM-FzY" eventType="touchUpInside" id="h2Z-VU-EqB"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" title="Add Location" id="Eui-bD-HdW">
                         <barButtonItem key="leftBarButtonItem" title="Cancel" id="nYY-fc-QMe">
                             <connections>
-                                <action selector="cancelButtonPressed:" destination="QvC-oM-FzY" id="j5N-gx-Hhz"/>
+                                <action selector="cancelButtonPressed:" destination="QvC-oM-FzY" id="GFT-Fh-SGJ"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
                     <connections>
-                        <outlet property="cancelButton" destination="nYY-fc-QMe" id="fHx-7b-ePb"/>
-                        <outlet property="cancelButtonPressed" destination="nYY-fc-QMe" id="zzv-6T-prd"/>
-                        <outlet property="enterLocationTextField" destination="CVJ-uH-QkV" id="uDu-X9-qaq"/>
+                        <outlet property="enterLocationTextField" destination="CVJ-uH-QkV" id="zaC-67-P2L"/>
                         <outlet property="findLocationButton" destination="cC9-07-tZW" id="Atu-sG-MTN"/>
-                        <outlet property="locationTextField" destination="CVJ-uH-QkV" id="i4Z-C7-wJ3"/>
-                        <outlet property="websiteTextField" destination="1XD-Bw-dms" id="1CP-hh-Aav"/>
+                        <outlet property="mapView" destination="gqk-7i-7xJ" id="yyx-z0-gRV"/>
+                        <outlet property="submitLocationButton" destination="pWv-mi-rbI" id="kXc-ot-OOQ"/>
+                        <outlet property="websiteTextField" destination="1XD-Bw-dms" id="6zc-Ou-fNc"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5t6-Wv-n8j" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2458" y="54"/>
-        </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="ndu-Xf-9PC">
-            <objects>
-                <navigationController id="33E-WI-vwC" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="66c-9H-gdc">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <connections>
-                        <segue destination="QvC-oM-FzY" kind="relationship" relationship="rootViewController" id="qQG-fT-Kej"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="dGC-8a-xzY" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1750" y="55"/>
+            <point key="canvasLocation" x="1709.5999999999999" y="-125.4872563718141"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="VrW-JX-kpr">
@@ -297,7 +301,7 @@
                             </barButtonItem>
                             <barButtonItem image="pin" id="pfD-FZ-ZXY">
                                 <connections>
-                                    <segue destination="33E-WI-vwC" kind="presentation" id="OG4-eQ-msB"/>
+                                    <segue destination="QvC-oM-FzY" kind="presentation" id="dEW-7W-CSf"/>
                                 </connections>
                             </barButtonItem>
                         </rightBarButtonItems>
@@ -348,46 +352,6 @@
             </objects>
             <point key="canvasLocation" x="-79.200000000000003" y="-297.30134932533736"/>
         </scene>
-        <!--Add Location-->
-        <scene sceneID="ULx-63-HtX">
-            <objects>
-                <viewController storyboardIdentifier="LocationFinderViewController" id="pzk-F0-ppE" customClass="LocationFinderViewController" customModule="On_The_Map" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="s3Q-dj-wYW"/>
-                        <viewControllerLayoutGuide type="bottom" id="HKM-wH-ksm"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="sG4-25-eH1" customClass="LocationFinderViewController">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <navigationBar contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5Az-SW-Oxq">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                                <items>
-                                    <navigationItem title="Add Location" id="jXA-ev-CWV"/>
-                                </items>
-                            </navigationBar>
-                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="EyN-zm-11y">
-                                <rect key="frame" x="0.0" y="44" width="375" height="625"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            </mapView>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0MJ-eG-GkA">
-                                <rect key="frame" x="16" y="585" width="343" height="48"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" red="0.42844462280000001" green="0.64017707960000003" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <state key="normal" title="Find Location">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                            </button>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    </view>
-                    <navigationItem key="navigationItem" title="Add Location" id="haH-Q7-THd"/>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="QoF-wO-Iak" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="3220" y="53.523238380809602"/>
-        </scene>
     </scenes>
     <resources>
         <image name="LaunchLogo" width="62" height="62"/>
@@ -397,6 +361,6 @@
         <image name="pin" width="24" height="24"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="OG4-eQ-msB"/>
+        <segue reference="NnC-t3-7vd"/>
     </inferredMetricsTieBreakers>
 </document>

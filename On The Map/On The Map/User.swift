@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import MapKit
 
 
 // A class to represent the "user" of the app; includes info such as uniqueKey, firstName, lastName

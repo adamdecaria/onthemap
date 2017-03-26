@@ -72,12 +72,7 @@ class InformationPostingViewController : UIViewController, MKMapViewDelegate, UI
             User.sharedUser().mapString = self.mainTextView.text
             User.sharedUser().webAddress = self.mapTextView.text
 
-            let annotation = MKPointAnnotation()
-            annotation.coordinate = (locationData?.coordinate)!
 
-            self.mapView.addAnnotation(annotation)
-            self.mapView.camera.centerCoordinate = (locationData?.coordinate)!
-            self.mapView.camera.altitude = self.mapView.camera.altitude * 0.2
         })
         
     } // End findButtonPressed

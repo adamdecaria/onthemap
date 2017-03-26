@@ -9,20 +9,25 @@
 import UIKit
 import MapKit
 
-class AddLocation : UIViewController, UITextFieldDelegate {
-    
+class InformationPostingViewController : UIViewController, UITextFieldDelegate, MKMapViewDelegate {
     
     // MARK: Outlets
-    @IBOutlet weak var cancelButton: UIBarButtonItem!
     @IBOutlet weak var enterLocationTextField: UITextField!
     @IBOutlet weak var websiteTextField: UITextField!
     @IBOutlet weak var findLocationButton: UIButton!
+    @IBOutlet weak var submitLocationButton: UIButton!
+    @IBOutlet weak var mapView: MKMapView!
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        websiteTextField.delegate = self
         enterLocationTextField.delegate = self
+        websiteTextField.delegate = self
+        
+        mapView.isHidden = true
+        submitLocationButton.isHidden = true
+        
+        mapView.delegate = self
         
     } // End viewWillAppear
     
@@ -34,32 +39,97 @@ class AddLocation : UIViewController, UITextFieldDelegate {
     } // end textFieldShouldReturn
     
     @IBAction func findLocationButtonPressed(_ sender: Any) {
-    
-        let userLocation = CLGeocoder()
         
-        userLocation.geocodeAddressString(enterLocationTextField.text!, completionHandler: { placemark, error in
-            
-            guard (error == nil) else {
-                let errorMessage = UIAlertController.init(title: "Error", message: "Unable to find that location", preferredStyle: .alert)
-                let okAction = UIAlertAction(title: "OK", style: .default)
+        if enterLocationTextField.hasText && websiteTextField.hasText {
+            if !(websiteTextField.text?.contains("http://"))! {
+                let errorMessage = UIAlertController.init(title: "Forgot Something...", message: "Please enter http:// before web address.", preferredStyle: .alert)
+                
+                let okAction = UIAlertAction(title: "OK", style: .default, handler: { _ in })
+                
                 errorMessage.addAction(okAction)
+                
                 self.present(errorMessage, animated: true)
-                return
             }
             
-            let locationData = placemark?[0].location
-            User.sharedUser().latitude = (locationData?.coordinate.latitude)! as Double
-            User.sharedUser().longitude = (locationData?.coordinate.longitude)! as Double
-        })
-        
-        let navigationController = (self.storyboard?.instantiateViewController(withIdentifier: "LocationFinderViewController"))! as UIViewController
-        self.present(navigationController, animated: true, completion: nil)
+            let userWebAddress = websiteTextField.text! as String
+            User.sharedUser().webAddress = userWebAddress
+            
+            mapView.isHidden = false
+            submitLocationButton.isHidden = false
+            findLocationButton.isHidden = true
+            enterLocationTextField.isHidden = true
+            websiteTextField.isHidden = true
+            
+            let userLocation = CLGeocoder()
+            
+            userLocation.geocodeAddressString(enterLocationTextField.text!, completionHandler: { placemark, error in
+                
+                guard (error == nil) else {
+                    let errorMessage = UIAlertController.init(title: "Error", message: "Unable to find that location", preferredStyle: .alert)
+                    let okAction = UIAlertAction(title: "OK", style: .default)
+                    errorMessage.addAction(okAction)
+                    self.present(errorMessage, animated: true)
+                    return
+                }
+                
+                let locationData = placemark?[0].location
+                User.sharedUser().latitude = (locationData?.coordinate.latitude)! as Double
+                User.sharedUser().longitude = (locationData?.coordinate.longitude)! as Double
+                
+                let annotation = MKPointAnnotation()
+                annotation.coordinate = (locationData?.coordinate)!
+                
+                self.mapView.addAnnotation(annotation)
+                self.mapView.camera.centerCoordinate = (locationData?.coordinate)!
+                self.mapView.camera.altitude = self.mapView.camera.altitude * 0.2
+                
+            })
+            
+        } else if !enterLocationTextField.hasText {
+            let errorMessage = UIAlertController.init(title: "Forgot Something...", message: "Please enter a location.", preferredStyle: .alert)
+            
+            let okAction = UIAlertAction(title: "OK", style: .default, handler: { _ in })
+            
+            errorMessage.addAction(okAction)
+            
+            self.present(errorMessage, animated: true)
+            
+        } else if !websiteTextField.hasText {
+            let errorMessage = UIAlertController.init(title: "Forgot Something...", message: "Please enter a URL.", preferredStyle: .alert)
+            
+            let okAction = UIAlertAction(title: "OK", style: .default, handler: { _ in })
+            
+            errorMessage.addAction(okAction)
+            
+            self.present(errorMessage, animated: true)
+        }
     
     } // End findLocationButtonPressed
-
+    
+    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+        
+        let reuseID = "pin"
+        
+        var pinView = mapView.dequeueReusableAnnotationView(withIdentifier: reuseID) as? MKPinAnnotationView
+        
+        if pinView == nil {
+            pinView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: reuseID)
+            pinView!.canShowCallout = true
+            pinView!.pinTintColor = .red
+            pinView!.rightCalloutAccessoryView = UIButton(type: .detailDisclosure)
+        } else {
+            pinView!.annotation = annotation
+        }
+        
+        return pinView
+    } // End mapView
+    
+    @IBAction func submitLocationButtonPressed(_ sender: Any) {
+        ParseClient.sharedInstance().taskForGETSession(completionHandler: { _ in ParseClient.sharedInstance().taskForPOSTStudent(completionHandler: { _ in self.dismiss(animated: true, completion: nil) }) })
+    } // End submitLocationButtonPressed
+    
     @IBAction func cancelButtonPressed(_ sender: Any) {
         self.dismiss(animated: true, completion: nil)
     } // End cancelButtonPressed
-    
     
 } // End AddLocation

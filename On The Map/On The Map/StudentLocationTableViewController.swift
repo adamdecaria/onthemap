@@ -18,6 +18,8 @@ class StudentLocationTableViewController: UITableViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
+        tableView.reloadData()
+        
         activityIndicator.hidesWhenStopped = true
         studentList = ParseClient.sharedInstance().shareStudentList()
     }

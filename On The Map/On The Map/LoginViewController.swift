@@ -43,7 +43,6 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     
     @IBAction func loginButtonPressed(_ sender: Any) {
         
-        
         if emailTextField.hasText && passwordTextField.hasText {
             
             DispatchQueue.main.async {
