@@ -18,15 +18,28 @@ class StudentLocationTableViewController: UITableViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        tableView.reloadData()
+        activityIndicator.color = UIColor.darkGray
+        activityIndicator.hidesWhenStopped = true
         
+        DispatchQueue.main.async {
+            self.activityIndicator.startAnimating()
+        }
+        
+        ParseClient.sharedInstance().taskForGETMethod(completionHandler: { () -> Void in self.studentList = ParseClient.sharedInstance().shareStudentList()
+            self.tableView.reloadData()
+        })
+        
+        DispatchQueue.main.async {
+            self.activityIndicator.stopAnimating()
+        }
+        
+        activityIndicator.color = UIColor.darkGray
         activityIndicator.hidesWhenStopped = true
         studentList = ParseClient.sharedInstance().shareStudentList()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        tableView.reloadData()
     }
     
     @IBAction func logoutButtonPressed(_ sender: Any) {

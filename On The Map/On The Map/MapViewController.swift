@@ -21,8 +21,16 @@ class MapViewController : UIViewController, MKMapViewDelegate {
         super.viewWillAppear(animated)
         
         activityIndicator.stopAnimating()
+        
+        mapView.delegate = self
+        
+        ParseClient.sharedInstance().taskForGETMethod(completionHandler: { () -> Void in self.studentList = ParseClient.sharedInstance().shareStudentList()
+            self.createMapWithPins()
+        })
+        
     }
     
+    /*
     override func viewDidLoad() {
         super.viewDidLoad()
         mapView.delegate = self
@@ -33,7 +41,7 @@ class MapViewController : UIViewController, MKMapViewDelegate {
         
     } // End viewDidLoad
     
-    
+    */
     @IBAction func logoutButtonPressed(_ sender: Any) {
         
         DispatchQueue.main.async {

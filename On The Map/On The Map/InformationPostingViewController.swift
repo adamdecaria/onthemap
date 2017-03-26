@@ -2,80 +2,109 @@
 //  InformationPostingViewController.swift
 //  On The Map
 //
-//  Created by Adam DeCaria on 2017-02-24.
+//  Created by Adam DeCaria on 2017-03-25.
 //  Copyright © 2017 Adam DeCaria. All rights reserved.
 //
 
-import MapKit
 import UIKit
+import MapKit
 
-class InformationPostingViewController : UIViewController, MKMapViewDelegate, UITextViewDelegate {
+class InformationPostingViewController : UIViewController, UITextFieldDelegate, MKMapViewDelegate {
     
-    //MARK: Outlets
-    @IBOutlet weak var mainTextView: UITextView!
-    @IBOutlet weak var userEntryTextField: UITextView!
-    @IBOutlet weak var findButton: UIButton!
+    // MARK: Outlets
+    @IBOutlet weak var enterLocationTextField: UITextField!
+    @IBOutlet weak var websiteTextField: UITextField!
+    @IBOutlet weak var findLocationButton: UIButton!
+    @IBOutlet weak var submitLocationButton: UIButton!
     @IBOutlet weak var mapView: MKMapView!
-    @IBOutlet weak var mapTextView: UITextView!
-    @IBOutlet weak var submitButton: UIButton!
-    @IBOutlet weak var activityViewIndicator: UIActivityIndicatorView!
-   
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
+        enterLocationTextField.delegate = self
+        websiteTextField.delegate = self
+        
         mapView.isHidden = true
-        mapTextView.isHidden = true
-        submitButton.isHidden = true
+        submitLocationButton.isHidden = true
         
-        userEntryTextField.delegate = self
         mapView.delegate = self
-        
-        activityViewIndicator.hidesWhenStopped = true
         
     } // End viewWillAppear
     
+    // ensure textField puts the keyboard away after use
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        
+        return textField.resignFirstResponder()
+        
+    } // end textFieldShouldReturn
     
-    // MARK: dismiss InformationPostingViewController when Cancel button pressed
-    @IBAction func cancelButtonPressed(_ sender: Any) {
+    @IBAction func findLocationButtonPressed(_ sender: Any) {
         
-        self.dismiss(animated: true, completion: nil)
-    } // end cancelButtonPressed
-    
-    @IBAction func findButtonPressed(_ sender: Any) {
-        
-        mainTextView.isHidden = true
-        mainTextView.delegate = nil
-        userEntryTextField.isHidden = true
-        findButton.isHidden = true
-        
-        mapTextView.delegate = self
-        mapTextView.isHidden = false
-        mapView.isHidden = false
-        submitButton.isHidden = false
-        
-        let userLocation = CLGeocoder()
-        userLocation.geocodeAddressString(userEntryTextField.text, completionHandler: { placemark, error in
-            
-            guard (error == nil) else {
-                let errorMessage = UIAlertController.init(title: "Error", message: "Unable to find that location", preferredStyle: .alert)
-                let okAction = UIAlertAction(title: "OK", style: .default)
+        if enterLocationTextField.hasText && websiteTextField.hasText {
+            if !(websiteTextField.text?.contains("http://"))! {
+                let errorMessage = UIAlertController.init(title: "Forgot Something...", message: "Please enter http:// before web address.", preferredStyle: .alert)
+                
+                let okAction = UIAlertAction(title: "OK", style: .default, handler: { _ in })
+                
                 errorMessage.addAction(okAction)
+                
                 self.present(errorMessage, animated: true)
-                return
             }
             
-            let locationData = placemark?[0].location
-            User.sharedUser().latitude = (locationData?.coordinate.latitude)! as Double
-            User.sharedUser().longitude = (locationData?.coordinate.longitude)! as Double
+            let userWebAddress = websiteTextField.text! as String
+            User.sharedUser().webAddress = userWebAddress
             
-            User.sharedUser().mapString = self.mainTextView.text
-            User.sharedUser().webAddress = self.mapTextView.text
-
-
-        })
+            mapView.isHidden = false
+            submitLocationButton.isHidden = false
+            findLocationButton.isHidden = true
+            enterLocationTextField.isHidden = true
+            websiteTextField.isHidden = true
+            
+            let userLocation = CLGeocoder()
+            
+            userLocation.geocodeAddressString(enterLocationTextField.text!, completionHandler: { placemark, error in
+                
+                guard (error == nil) else {
+                    let errorMessage = UIAlertController.init(title: "Error", message: "Unable to find that location", preferredStyle: .alert)
+                    let okAction = UIAlertAction(title: "OK", style: .default)
+                    errorMessage.addAction(okAction)
+                    self.present(errorMessage, animated: true)
+                    return
+                }
+                
+                let locationData = placemark?[0].location
+                User.sharedUser().latitude = (locationData?.coordinate.latitude)! as Double
+                User.sharedUser().longitude = (locationData?.coordinate.longitude)! as Double
+                
+                let annotation = MKPointAnnotation()
+                annotation.coordinate = (locationData?.coordinate)!
+                
+                self.mapView.addAnnotation(annotation)
+                self.mapView.camera.centerCoordinate = (locationData?.coordinate)!
+                self.mapView.camera.altitude = self.mapView.camera.altitude * 0.2
+                
+            })
+            
+        } else if !enterLocationTextField.hasText {
+            let errorMessage = UIAlertController.init(title: "Forgot Something...", message: "Please enter a location.", preferredStyle: .alert)
+            
+            let okAction = UIAlertAction(title: "OK", style: .default, handler: { _ in })
+            
+            errorMessage.addAction(okAction)
+            
+            self.present(errorMessage, animated: true)
+            
+        } else if !websiteTextField.hasText {
+            let errorMessage = UIAlertController.init(title: "Forgot Something...", message: "Please enter a URL.", preferredStyle: .alert)
+            
+            let okAction = UIAlertAction(title: "OK", style: .default, handler: { _ in })
+            
+            errorMessage.addAction(okAction)
+            
+            self.present(errorMessage, animated: true)
+        }
         
-    } // End findButtonPressed
+    } // End findLocationButtonPressed
     
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
         
@@ -95,36 +124,13 @@ class InformationPostingViewController : UIViewController, MKMapViewDelegate, UI
         return pinView
     } // End mapView
     
-    func textViewDidBeginEditing(_ textView: UITextView) {
-        textView.text = ""
-    }
+    @IBAction func submitLocationButtonPressed(_ sender: Any) {
+        ParseClient.sharedInstance().taskForGETSession(completionHandler: { _ in ParseClient.sharedInstance().taskForPOSTStudent(completionHandler: { _ in self.dismiss(animated: true, completion: nil) }) })
+    } // End submitLocationButtonPressed
     
-    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
-
-        if text == "\n" {
-            return textView.resignFirstResponder()
-        }
-        return true
-    } // End textView
-    
-    @IBAction func submitButtonPressed(_ sender: Any) {
-        
-        if !mapTextView.hasText {
-            let errorMessage = UIAlertController.init(title: "Forgot Something...", message: "Please enter a URL.", preferredStyle: .alert)
-            
-            let okAction = UIAlertAction(title: "OK", style: .default, handler: { _ in })
-            
-            errorMessage.addAction(okAction)
-            
-            self.present(errorMessage, animated: true)
-        } else {
-            let userWebAddress = mapTextView.text as String
-            User.sharedUser().webAddress = "http://\(userWebAddress)"
-            ParseClient.sharedInstance().taskForGETSession(completionHandler: { _ in ParseClient.sharedInstance().taskForPOSTStudent() })
-        }
- 
-    } // End submitButtonPressed
-    
+    @IBAction func cancelButtonPressed(_ sender: Any) {
+        self.dismiss(animated: true, completion: nil)
+    } // End cancelButtonPressed
     
 } // End InformationPostingViewController
 

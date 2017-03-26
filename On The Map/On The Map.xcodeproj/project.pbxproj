@@ -15,7 +15,7 @@
 		CE7917D61E27210000FD3B72 /* On_The_MapTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7917D51E27210000FD3B72 /* On_The_MapTests.swift */; };
 		CE7917E11E27210000FD3B72 /* On_The_MapUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7917E01E27210000FD3B72 /* On_The_MapUITests.swift */; };
 		CE7917F21E27280100FD3B72 /* UdacityClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7917F11E27280100FD3B72 /* UdacityClient.swift */; };
-		CE9FCD481E86D82900BF5002 /* AddLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE9FCD471E86D82900BF5002 /* AddLocation.swift */; };
+		CE90ECF61E8836E100CD30C6 /* InformationPostingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE90ECF51E8836E100CD30C6 /* InformationPostingViewController.swift */; };
 		CEB4DBEF1E52A15D00615EB2 /* StudentLocationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEB4DBEE1E52A15D00615EB2 /* StudentLocationTableViewCell.swift */; };
 		CEB4DBF11E52A34600615EB2 /* StudentLocationTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEB4DBF01E52A34600615EB2 /* StudentLocationTableViewController.swift */; };
 		CEC8544C1E2AB21F0009E663 /* UdacityConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEC8544B1E2AB21F0009E663 /* UdacityConstants.swift */; };
@@ -58,7 +58,7 @@
 		CE7917E01E27210000FD3B72 /* On_The_MapUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = On_The_MapUITests.swift; sourceTree = "<group>"; };
 		CE7917E21E27210000FD3B72 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CE7917F11E27280100FD3B72 /* UdacityClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UdacityClient.swift; sourceTree = "<group>"; };
-		CE9FCD471E86D82900BF5002 /* AddLocation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddLocation.swift; sourceTree = "<group>"; };
+		CE90ECF51E8836E100CD30C6 /* InformationPostingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InformationPostingViewController.swift; sourceTree = "<group>"; };
 		CEB4DBEE1E52A15D00615EB2 /* StudentLocationTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StudentLocationTableViewCell.swift; sourceTree = "<group>"; };
 		CEB4DBF01E52A34600615EB2 /* StudentLocationTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StudentLocationTableViewController.swift; sourceTree = "<group>"; };
 		CEC8544B1E2AB21F0009E663 /* UdacityConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UdacityConstants.swift; sourceTree = "<group>"; };
@@ -162,7 +162,7 @@
 		CE7917F01E27218E00FD3B72 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				CE9FCD471E86D82900BF5002 /* AddLocation.swift */,
+				CE90ECF51E8836E100CD30C6 /* InformationPostingViewController.swift */,
 				CEB4DBF01E52A34600615EB2 /* StudentLocationTableViewController.swift */,
 				CEB4DBEE1E52A15D00615EB2 /* StudentLocationTableViewCell.swift */,
 				CEF2318A1E2C0E0200DCC574 /* MapViewController.swift */,
@@ -311,9 +311,9 @@
 				CE7917C11E27210000FD3B72 /* AppDelegate.swift in Sources */,
 				CE7917F21E27280100FD3B72 /* UdacityClient.swift in Sources */,
 				CEB4DBF11E52A34600615EB2 /* StudentLocationTableViewController.swift in Sources */,
+				CE90ECF61E8836E100CD30C6 /* InformationPostingViewController.swift in Sources */,
 				CEF2318B1E2C0E0200DCC574 /* MapViewController.swift in Sources */,
 				CEC8544C1E2AB21F0009E663 /* UdacityConstants.swift in Sources */,
-				CE9FCD481E86D82900BF5002 /* AddLocation.swift in Sources */,
 				CEDE9D561E7386240028D191 /* User.swift in Sources */,
 				CEB4DBEF1E52A15D00615EB2 /* StudentLocationTableViewCell.swift in Sources */,
 				CED48A771E2EB08500363BD0 /* ParseConstants.swift in Sources */,

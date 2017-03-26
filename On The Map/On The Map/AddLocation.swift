@@ -1,5 +1,5 @@
 //
-//  AddLocation.swift
+//  InformationPostingViewController.swift
 //  On The Map
 //
 //  Created by Adam DeCaria on 2017-03-25.
@@ -132,4 +132,4 @@ class InformationPostingViewController : UIViewController, UITextFieldDelegate, 
         self.dismiss(animated: true, completion: nil)
     } // End cancelButtonPressed
     
-} // End AddLocation
+} // End InformationPostingViewController
