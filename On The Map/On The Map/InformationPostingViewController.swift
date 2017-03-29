@@ -17,6 +17,7 @@ class InformationPostingViewController : UIViewController, UITextFieldDelegate, 
     @IBOutlet weak var findLocationButton: UIButton!
     @IBOutlet weak var submitLocationButton: UIButton!
     @IBOutlet weak var mapView: MKMapView!
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -29,6 +30,9 @@ class InformationPostingViewController : UIViewController, UITextFieldDelegate, 
         
         mapView.delegate = self
         
+        self.activityIndicator.color = UIColor.darkGray
+        self.activityIndicator.stopAnimating()
+        
     } // End viewWillAppear
     
     // ensure textField puts the keyboard away after use
@@ -39,6 +43,12 @@ class InformationPostingViewController : UIViewController, UITextFieldDelegate, 
     } // end textFieldShouldReturn
     
     @IBAction func findLocationButtonPressed(_ sender: Any) {
+        
+        activityIndicator.isHidden = false
+        
+        DispatchQueue.main.async {
+            self.activityIndicator.startAnimating()
+        }
         
         if enterLocationTextField.hasText && websiteTextField.hasText {
             if !(websiteTextField.text?.contains("http://"))! {
@@ -85,6 +95,10 @@ class InformationPostingViewController : UIViewController, UITextFieldDelegate, 
                 
             })
             
+            DispatchQueue.main.async {
+                self.activityIndicator.stopAnimating()
+            }
+            
         } else if !enterLocationTextField.hasText {
             let errorMessage = UIAlertController.init(title: "Forgot Something...", message: "Please enter a location.", preferredStyle: .alert)
             
@@ -125,7 +139,17 @@ class InformationPostingViewController : UIViewController, UITextFieldDelegate, 
     } // End mapView
     
     @IBAction func submitLocationButtonPressed(_ sender: Any) {
+        
+        DispatchQueue.main.async {
+            self.activityIndicator.startAnimating()
+        }
+        
         ParseClient.sharedInstance().taskForGETSession(completionHandler: { _ in ParseClient.sharedInstance().taskForPOSTStudent(completionHandler: { _ in self.dismiss(animated: true, completion: nil) }) })
+        
+        DispatchQueue.main.async {
+            self.activityIndicator.stopAnimating()
+        }
+        
     } // End submitLocationButtonPressed
     
     @IBAction func cancelButtonPressed(_ sender: Any) {

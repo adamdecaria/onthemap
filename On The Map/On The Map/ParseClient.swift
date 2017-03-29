@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 
 // MARK: ParseClient : NSObject
 class ParseClient : NSObject {
@@ -16,9 +17,7 @@ class ParseClient : NSObject {
     // shared URL session for this app
     let session = URLSession.shared
     
-    var studentList = [StudentLocation]()
-    
-    func taskForGETMethod(completionHandler: @escaping () -> Void) {
+    func taskForGETMethod(completionHandler: @escaping (_ error: String?) -> Void) {
         
         let request = NSMutableURLRequest(url: URL(string: "\(ParseConstants.parseWebAddress)?limit=100&order=-updatedAt")!)
         
@@ -32,9 +31,11 @@ class ParseClient : NSObject {
         let task = self.session.dataTask(with: request as URLRequest) { data, response, error in
             
             if error != nil {
-                print("Error with URL request")
+                completionHandler(error?.localizedDescription)
                 return
             }
+            
+            StudentData.shareStudentData().studentData.removeAll()
             
             //print(NSString(data: data!, encoding: String.Encoding.utf8.rawValue)!)
             DispatchQueue.global(qos: .userInitiated).async {
@@ -49,19 +50,18 @@ class ParseClient : NSObject {
                     for element in resultsArray {
                         // check to make sure there is student data
                         if let student = StudentLocation(studentDictionary: element) {
-                            self.studentList.append((student))
+                            StudentData.shareStudentData().studentData.append((student))
                         } else {
                             print("no student info")
                         }
                     }
-                    
                 } catch {
                     print("Error with the JSON data")
                 }
             }
             
             DispatchQueue.main.async {
-                completionHandler()
+                completionHandler(nil)
             }
         }
         task.resume()
@@ -193,10 +193,11 @@ class ParseClient : NSObject {
  
     } // End taskForGETSession
  
-    func shareStudentList() -> [StudentLocation] {
-        return self.studentList
-    } // End shareStudentList
     
+    func shareStudentList() -> [StudentLocation] {
+        return StudentData.shareStudentData().studentData
+    } // End shareStudentList
+
     // Singleton pattern for a shared UdacityClient instance across the app
     class func sharedInstance() -> ParseClient {
         

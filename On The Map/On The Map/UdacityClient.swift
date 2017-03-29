@@ -51,7 +51,7 @@ class UdacityClient : NSObject {
             }
             
             guard (error == nil) else {
-                errorHandler(error as! String)
+                errorHandler(error.debugDescription)
                 return
             }
             

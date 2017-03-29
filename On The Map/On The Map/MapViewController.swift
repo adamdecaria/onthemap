@@ -11,10 +11,8 @@ import MapKit
 
 class MapViewController : UIViewController, MKMapViewDelegate {
     
+    // MARK: Outlets
     @IBOutlet weak var mapView: MKMapView!
-    
-    var studentList = [StudentLocation]()
-    
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
     override func viewWillAppear(_ animated: Bool) {
@@ -22,26 +20,29 @@ class MapViewController : UIViewController, MKMapViewDelegate {
         
         activityIndicator.stopAnimating()
         
-        mapView.delegate = self
-        
-        ParseClient.sharedInstance().taskForGETMethod(completionHandler: { () -> Void in self.studentList = ParseClient.sharedInstance().shareStudentList()
+        ParseClient.sharedInstance().taskForGETMethod(completionHandler: { (_ error) -> Void in
+            
+            guard(error == nil) else {
+                let errorMessage = UIAlertController.init(title: "Network Error", message: "Please check network connection and try again.", preferredStyle: .alert)
+                let okAction = UIAlertAction(title: "OK", style: .default)
+                errorMessage.addAction(okAction)
+                self.present(errorMessage, animated: true)
+                self.activityIndicator.stopAnimating()
+                return
+            }
+            
+            StudentData.shareStudentData().studentData = ParseClient.sharedInstance().shareStudentList()
             self.createMapWithPins()
         })
         
-    }
+    } // End viewWillAppear
     
-    /*
     override func viewDidLoad() {
         super.viewDidLoad()
         mapView.delegate = self
         
-        ParseClient.sharedInstance().taskForGETMethod(completionHandler: { () -> Void in self.studentList = ParseClient.sharedInstance().shareStudentList()
-            self.createMapWithPins()
-        })
-        
     } // End viewDidLoad
-    
-    */
+ 
     @IBAction func logoutButtonPressed(_ sender: Any) {
         
         DispatchQueue.main.async {
@@ -54,15 +55,27 @@ class MapViewController : UIViewController, MKMapViewDelegate {
     
     } // End logoutButtonPressed
 
-    
-
     @IBAction func refreshButtonPressed(_ sender: UIBarButtonItem) {
         
         DispatchQueue.main.async {
             self.activityIndicator.startAnimating()
         }
         
-        ParseClient.sharedInstance().taskForGETMethod(completionHandler: { () -> Void in self.studentList = ParseClient.sharedInstance().shareStudentList()
+        StudentData.shareStudentData().studentData.removeAll()
+        
+        ParseClient.sharedInstance().taskForGETMethod(completionHandler: { (_ error) -> Void in
+            
+            guard(error == nil) else {
+                let errorMessage = UIAlertController.init(title: "Network Error", message: "Please check network connection and try again.", preferredStyle: .alert)
+                let okAction = UIAlertAction(title: "OK", style: .default)
+                errorMessage.addAction(okAction)
+                self.present(errorMessage, animated: true)
+                self.activityIndicator.stopAnimating()
+                return
+            }
+            
+            StudentData.shareStudentData().studentData = ParseClient.sharedInstance().shareStudentList()
+            print("Student data on map view after refresh: \n", StudentData.shareStudentData().studentData)
             self.createMapWithPins()
         })
         
@@ -74,7 +87,7 @@ class MapViewController : UIViewController, MKMapViewDelegate {
     
     func createMapWithPins()  {
 
-        let data = self.studentList
+        let data = StudentData.shareStudentData().studentData
         
         var annotations = [MKPointAnnotation]()
         
@@ -129,6 +142,6 @@ class MapViewController : UIViewController, MKMapViewDelegate {
                 app.open(URL(string: toOpen)!, options: [:], completionHandler: nil)
             }
         }
-    }
+    } // End mapView
     
 } // End MapViewController
