@@ -309,6 +309,8 @@
                     </navigationItem>
                     <connections>
                         <outlet property="activityIndicator" destination="gXY-Ib-MJe" id="a5g-7G-x6p"/>
+                        <outlet property="studentDataTableView" destination="pw5-LW-mfe" id="4hX-Ya-sxW"/>
+                        <outlet property="tableView" destination="pw5-LW-mfe" id="8GM-Zs-hmw"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Qmn-yn-lfe" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -362,6 +364,6 @@
         <image name="pin" width="24" height="24"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="NnC-t3-7vd"/>
+        <segue reference="dEW-7W-CSf"/>
     </inferredMetricsTieBreakers>
 </document>

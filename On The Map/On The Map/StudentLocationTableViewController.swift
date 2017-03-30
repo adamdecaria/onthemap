@@ -12,6 +12,7 @@ import UIKit
 class StudentLocationTableViewController: UITableViewController {
     
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+    @IBOutlet var studentDataTableView: UITableView!
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -30,14 +31,14 @@ class StudentLocationTableViewController: UITableViewController {
                 return
             }
             
-            StudentData.shareStudentData().studentData = ParseClient.sharedInstance().shareStudentList()
-            self.tableView.reloadData()
+            self.studentDataTableView.reloadData()
         })
         
     } // End viewWillAppear
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        studentDataTableView.delegate = self
     }
     
     @IBAction func logoutButtonPressed(_ sender: Any) {
@@ -53,7 +54,7 @@ class StudentLocationTableViewController: UITableViewController {
     } // End logoutButtonPressed
     
     @IBAction func refreshButtonPressed(_ sender: Any) {
-            
+        print("refresh button pressed.")
         ParseClient.sharedInstance().taskForGETMethod(completionHandler: { (_ error) -> Void in
             
             guard(error == nil) else {
@@ -64,20 +65,21 @@ class StudentLocationTableViewController: UITableViewController {
                 self.activityIndicator.stopAnimating()
                 return
             }
-            print("Data from taskForGETMethod: ", StudentData.shareStudentData().studentData)
+            self.studentDataTableView.reloadData()
         })
- 
+
+        
     } // End refreshButtonPressed
     
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return StudentData.shareStudentData().studentData.count
+        return StudentData.shareStudentData().studentArray.count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "StudentLocationTableViewCell")
-        let student = StudentData.shareStudentData().studentData[indexPath.row]
+        let student = StudentData.shareStudentData().studentArray[indexPath.row]
         
         cell?.textLabel?.text = student.firstName + " " + student.lastName
         return cell!
@@ -86,7 +88,7 @@ class StudentLocationTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        let student = StudentData.shareStudentData().studentData[indexPath.row]
+        let student = StudentData.shareStudentData().studentArray[indexPath.row]
         let studentURL = student.mediaURL
         
         let app = UIApplication.shared

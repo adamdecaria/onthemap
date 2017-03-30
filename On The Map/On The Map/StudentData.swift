@@ -10,7 +10,7 @@ import Foundation
 
 class StudentData {
     
-    var studentData = [StudentLocation]()
+    var studentArray = [StudentLocation]()
     
     private init() {}
     

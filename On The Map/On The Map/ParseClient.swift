@@ -27,16 +27,13 @@ class ParseClient : NSObject {
         request.addValue(ParseConstants.jsonOK, forHTTPHeaderField: "Accept")
         request.addValue(ParseConstants.jsonOK, forHTTPHeaderField: "Content-Type")
         
-        
         let task = self.session.dataTask(with: request as URLRequest) { data, response, error in
             
             if error != nil {
                 completionHandler(error?.localizedDescription)
                 return
             }
-            
-            StudentData.shareStudentData().studentData.removeAll()
-            
+
             //print(NSString(data: data!, encoding: String.Encoding.utf8.rawValue)!)
             DispatchQueue.global(qos: .userInitiated).async {
                 do {
@@ -50,7 +47,7 @@ class ParseClient : NSObject {
                     for element in resultsArray {
                         // check to make sure there is student data
                         if let student = StudentLocation(studentDictionary: element) {
-                            StudentData.shareStudentData().studentData.append((student))
+                            StudentData.shareStudentData().studentArray.append((student))
                         } else {
                             print("no student info")
                         }
@@ -59,11 +56,12 @@ class ParseClient : NSObject {
                     print("Error with the JSON data")
                 }
             }
-            
+            print("Data reloaded")
             DispatchQueue.main.async {
                 completionHandler(nil)
             }
         }
+        
         task.resume()
     } // End taskForGETMethod
     
@@ -101,7 +99,6 @@ class ParseClient : NSObject {
                 errorHandler("Bad response from the server.")
                 return
             }
-
             
             var parsedResult : [String:AnyObject]!
             
@@ -192,11 +189,6 @@ class ParseClient : NSObject {
         task.resume()
  
     } // End taskForGETSession
- 
-    
-    func shareStudentList() -> [StudentLocation] {
-        return StudentData.shareStudentData().studentData
-    } // End shareStudentList
 
     // Singleton pattern for a shared UdacityClient instance across the app
     class func sharedInstance() -> ParseClient {

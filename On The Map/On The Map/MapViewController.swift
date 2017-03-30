@@ -31,7 +31,6 @@ class MapViewController : UIViewController, MKMapViewDelegate {
                 return
             }
             
-            StudentData.shareStudentData().studentData = ParseClient.sharedInstance().shareStudentList()
             self.createMapWithPins()
         })
         
@@ -57,12 +56,11 @@ class MapViewController : UIViewController, MKMapViewDelegate {
 
     @IBAction func refreshButtonPressed(_ sender: UIBarButtonItem) {
         
-        DispatchQueue.main.async {
-            self.activityIndicator.startAnimating()
-        }
+        self.mapView.removeAnnotations(mapView.annotations)
         
-        StudentData.shareStudentData().studentData.removeAll()
-        
+        //StudentData.shareStudentData().studentArray.removeAll()
+        //print("Student data emptied")
+      
         ParseClient.sharedInstance().taskForGETMethod(completionHandler: { (_ error) -> Void in
             
             guard(error == nil) else {
@@ -73,21 +71,16 @@ class MapViewController : UIViewController, MKMapViewDelegate {
                 self.activityIndicator.stopAnimating()
                 return
             }
-            
-            StudentData.shareStudentData().studentData = ParseClient.sharedInstance().shareStudentList()
-            print("Student data on map view after refresh: \n", StudentData.shareStudentData().studentData)
+
+            print("Student data on map view after refresh: \n", StudentData.shareStudentData().studentArray)
             self.createMapWithPins()
         })
-        
-        DispatchQueue.main.async {
-            self.activityIndicator.stopAnimating()
-        }
         
     } // End refreshButtonPressed
     
     func createMapWithPins()  {
 
-        let data = StudentData.shareStudentData().studentData
+        let data = StudentData.shareStudentData().studentArray
         
         var annotations = [MKPointAnnotation]()
         
