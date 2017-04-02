@@ -12,7 +12,6 @@ import UIKit
 class StudentLocationTableViewController: UITableViewController {
     
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
-    @IBOutlet var studentDataTableView: UITableView!
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -31,14 +30,18 @@ class StudentLocationTableViewController: UITableViewController {
                 return
             }
             
-            self.studentDataTableView.reloadData()
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+                print(Thread.isMainThread)
+            }
         })
         
     } // End viewWillAppear
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        studentDataTableView.delegate = self
+        self.tableView.delegate = self
+        self.tableView.dataSource = self
     }
     
     @IBAction func logoutButtonPressed(_ sender: Any) {
@@ -65,9 +68,12 @@ class StudentLocationTableViewController: UITableViewController {
                 self.activityIndicator.stopAnimating()
                 return
             }
-            self.studentDataTableView.reloadData()
+            
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+                print(Thread.isMainThread)
+            }
         })
-
         
     } // End refreshButtonPressed
     

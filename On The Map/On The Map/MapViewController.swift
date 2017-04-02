@@ -30,8 +30,9 @@ class MapViewController : UIViewController, MKMapViewDelegate {
                 self.activityIndicator.stopAnimating()
                 return
             }
-            
-            self.createMapWithPins()
+            DispatchQueue.main.async {
+                self.createMapWithPins()
+            }
         })
         
     } // End viewWillAppear
@@ -71,9 +72,9 @@ class MapViewController : UIViewController, MKMapViewDelegate {
                 self.activityIndicator.stopAnimating()
                 return
             }
-
-            print("Student data on map view after refresh: \n", StudentData.shareStudentData().studentArray)
-            self.createMapWithPins()
+            DispatchQueue.main.async {
+                self.createMapWithPins()
+            }
         })
         
     } // End refreshButtonPressed

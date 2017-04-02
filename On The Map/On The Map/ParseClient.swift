@@ -56,10 +56,8 @@ class ParseClient : NSObject {
                     print("Error with the JSON data")
                 }
             }
-            print("Data reloaded")
-            DispatchQueue.main.async {
-                completionHandler(nil)
-            }
+            
+            completionHandler(nil)
         }
         
         task.resume()
