@@ -19,22 +19,7 @@ class StudentLocationTableViewController: UITableViewController {
         activityIndicator.color = UIColor.darkGray
         activityIndicator.hidesWhenStopped = true
         
-        ParseClient.sharedInstance().taskForGETMethod(completionHandler: { (_ error) -> Void in
-            
-            guard(error == nil) else {
-                let errorMessage = UIAlertController.init(title: "Network Error", message: "Please check network connection and try again.", preferredStyle: .alert)
-                let okAction = UIAlertAction(title: "OK", style: .default)
-                errorMessage.addAction(okAction)
-                self.present(errorMessage, animated: true)
-                self.activityIndicator.stopAnimating()
-                return
-            }
-            
-            DispatchQueue.main.async {
-                self.tableView.reloadData()
-                print(Thread.isMainThread)
-            }
-        })
+        self.tableView.reloadData()
         
     } // End viewWillAppear
     
@@ -57,9 +42,9 @@ class StudentLocationTableViewController: UITableViewController {
     } // End logoutButtonPressed
     
     @IBAction func refreshButtonPressed(_ sender: Any) {
-        print("refresh button pressed.")
+           
         ParseClient.sharedInstance().taskForGETMethod(completionHandler: { (_ error) -> Void in
-            
+                
             guard(error == nil) else {
                 let errorMessage = UIAlertController.init(title: "Network Error", message: "Please check network connection and try again.", preferredStyle: .alert)
                 let okAction = UIAlertAction(title: "OK", style: .default)
@@ -68,15 +53,14 @@ class StudentLocationTableViewController: UITableViewController {
                 self.activityIndicator.stopAnimating()
                 return
             }
-            
-            DispatchQueue.main.async {
-                self.tableView.reloadData()
-                print(Thread.isMainThread)
-            }
         })
         
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
+            print("Refresh is acting on main thread?: ", Thread.isMainThread)
+        }
+        
     } // End refreshButtonPressed
-    
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return StudentData.shareStudentData().studentArray.count

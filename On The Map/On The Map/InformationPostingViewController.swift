@@ -144,12 +144,16 @@ class InformationPostingViewController : UIViewController, UITextFieldDelegate, 
             self.activityIndicator.startAnimating()
         }
         
-        ParseClient.sharedInstance().taskForGETSession(completionHandler: { _ in ParseClient.sharedInstance().taskForPOSTStudent(completionHandler: { _ in self.dismiss(animated: true, completion: nil) }) })
-        
-        DispatchQueue.main.async {
+        DispatchQueue.global(qos: .userInitiated).async {
+            ParseClient.sharedInstance().taskForGETSession(completionHandler: { _ in ParseClient.sharedInstance().taskForPOSTStudent() })
+            
+            StudentData.shareStudentData().studentArray.removeAll()
+            
             self.activityIndicator.stopAnimating()
         }
         
+        self.dismiss(animated: true, completion: nil)
+
     } // End submitLocationButtonPressed
     
     @IBAction func cancelButtonPressed(_ sender: Any) {

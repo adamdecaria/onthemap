@@ -58,25 +58,26 @@ class MapViewController : UIViewController, MKMapViewDelegate {
     @IBAction func refreshButtonPressed(_ sender: UIBarButtonItem) {
         
         self.mapView.removeAnnotations(mapView.annotations)
-        
-        //StudentData.shareStudentData().studentArray.removeAll()
-        //print("Student data emptied")
       
-        ParseClient.sharedInstance().taskForGETMethod(completionHandler: { (_ error) -> Void in
-            
-            guard(error == nil) else {
-                let errorMessage = UIAlertController.init(title: "Network Error", message: "Please check network connection and try again.", preferredStyle: .alert)
-                let okAction = UIAlertAction(title: "OK", style: .default)
-                errorMessage.addAction(okAction)
-                self.present(errorMessage, animated: true)
-                self.activityIndicator.stopAnimating()
-                return
-            }
-            DispatchQueue.main.async {
-                self.createMapWithPins()
-            }
-        })
+        DispatchQueue.global(qos: .userInitiated).async {
         
+            ParseClient.sharedInstance().taskForGETMethod(completionHandler: { (_ error) -> Void in
+            
+                guard(error == nil) else {
+                    let errorMessage = UIAlertController.init(title: "Network Error", message: "Please check network connection and try again.", preferredStyle: .alert)
+                    let okAction = UIAlertAction(title: "OK", style: .default)
+                    errorMessage.addAction(okAction)
+                    self.present(errorMessage, animated: true)
+                    self.activityIndicator.stopAnimating()
+                    return
+                }
+            })
+        }
+        
+        DispatchQueue.main.async {
+            self.createMapWithPins()
+        }
+    
     } // End refreshButtonPressed
     
     func createMapWithPins()  {

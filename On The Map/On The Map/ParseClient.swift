@@ -19,7 +19,7 @@ class ParseClient : NSObject {
     
     func taskForGETMethod(completionHandler: @escaping (_ error: String?) -> Void) {
         
-        let request = NSMutableURLRequest(url: URL(string: "\(ParseConstants.parseWebAddress)?limit=100&order=-updatedAt")!)
+        let request = NSMutableURLRequest(url: URL(string: "\(ParseConstants.parseWebAddress)?limit=10&order=-updatedAt")!)
         
         request.httpMethod = "GET"
         request.addValue(ParseAPIRequired.parseApplicationID, forHTTPHeaderField: "X-Parse-Application-Id")
@@ -55,15 +55,15 @@ class ParseClient : NSObject {
                 } catch {
                     print("Error with the JSON data")
                 }
+                print("Completion handler on main thread?: ", Thread.isMainThread)
+                completionHandler(nil)
             }
-            
-            completionHandler(nil)
         }
         
         task.resume()
     } // End taskForGETMethod
     
-    func taskForPOSTStudent(completionHandler: @escaping () -> Void) {
+    func taskForPOSTStudent() {
         
         print("Starting taskForPOSTStudent")
         print("Key: " + User.sharedUser().uniqueKey)
@@ -110,7 +110,6 @@ class ParseClient : NSObject {
                 } catch {
                     print("There was an error creating the student.")
                 }
-                completionHandler()
             }
         }
         
@@ -188,7 +187,7 @@ class ParseClient : NSObject {
  
     } // End taskForGETSession
 
-    // Singleton pattern for a shared UdacityClient instance across the app
+    // Singleton pattern for a shared ParseClient instance across the app
     class func sharedInstance() -> ParseClient {
         
         struct ParseSingleton {
