@@ -19,7 +19,21 @@ class StudentLocationTableViewController: UITableViewController {
         activityIndicator.color = UIColor.darkGray
         activityIndicator.hidesWhenStopped = true
         
-        self.tableView.reloadData()
+        DispatchQueue.global(qos: .userInitiated).async {
+            ParseClient.sharedInstance().taskForGETMethod(completionHandler: { (_ error) -> Void in
+                
+                guard(error == nil) else {
+                    let errorMessage = UIAlertController.init(title: "Network Error", message: "Please check network connection and try again.", preferredStyle: .alert)
+                    let okAction = UIAlertAction(title: "OK", style: .default)
+                    errorMessage.addAction(okAction)
+                    self.present(errorMessage, animated: true)
+                    self.activityIndicator.stopAnimating()
+                    return
+                }
+            })
+            
+            self.tableView.reloadData()
+        }
         
     } // End viewWillAppear
     
@@ -55,11 +69,8 @@ class StudentLocationTableViewController: UITableViewController {
             }
         })
         
-        DispatchQueue.main.async {
-            self.tableView.reloadData()
-            print("Refresh is acting on main thread?: ", Thread.isMainThread)
-        }
-        
+        self.tableView.reloadData()
+
     } // End refreshButtonPressed
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

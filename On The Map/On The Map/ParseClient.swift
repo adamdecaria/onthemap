@@ -63,7 +63,7 @@ class ParseClient : NSObject {
         task.resume()
     } // End taskForGETMethod
     
-    func taskForPOSTStudent() {
+    func taskForPOSTStudent(completionHandler: @escaping ()-> Void) {
         
         print("Starting taskForPOSTStudent")
         print("Key: " + User.sharedUser().uniqueKey)
@@ -110,6 +110,7 @@ class ParseClient : NSObject {
                 } catch {
                     print("There was an error creating the student.")
                 }
+                completionHandler()
             }
         }
         
