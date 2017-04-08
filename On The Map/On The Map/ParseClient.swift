@@ -19,7 +19,7 @@ class ParseClient : NSObject {
     
     func taskForGETMethod(completionHandler: @escaping (_ error: String?) -> Void) {
         
-        let request = NSMutableURLRequest(url: URL(string: "\(ParseConstants.parseWebAddress)?limit=10&order=-updatedAt")!)
+        let request = NSMutableURLRequest(url: URL(string: "\(ParseConstants.parseWebAddress)?limit=100&order=-updatedAt")!)
         
         request.httpMethod = "GET"
         request.addValue(ParseAPIRequired.parseApplicationID, forHTTPHeaderField: "X-Parse-Application-Id")
