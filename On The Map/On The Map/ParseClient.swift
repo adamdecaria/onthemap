@@ -55,7 +55,6 @@ class ParseClient : NSObject {
                 } catch {
                     print("Error with the JSON data")
                 }
-                print("Completion handler on main thread?: ", Thread.isMainThread)
                 completionHandler(nil)
             }
         }
@@ -63,7 +62,7 @@ class ParseClient : NSObject {
         task.resume()
     } // End taskForGETMethod
     
-    func taskForPOSTStudent(completionHandler: @escaping ()-> Void) {
+    func taskForPOSTStudent(completionHandler: @escaping (_ error: String?) -> Void) {
         
         print("Starting taskForPOSTStudent")
         print("Key: " + User.sharedUser().uniqueKey)
@@ -83,11 +82,11 @@ class ParseClient : NSObject {
         let task = self.session.dataTask(with: request as URLRequest) { data, response, error in
             
             func errorHandler(_ error: String) {
-                print(error)
+                completionHandler(error)
             }
             
             guard (error == nil) else {
-                errorHandler(error as! String)
+                errorHandler(error.debugDescription)
                 return
             }
             
@@ -110,7 +109,7 @@ class ParseClient : NSObject {
                 } catch {
                     print("There was an error creating the student.")
                 }
-                completionHandler()
+                completionHandler(nil)
             }
         }
         
@@ -130,12 +129,9 @@ class ParseClient : NSObject {
         
         
         let queryItemOne = URLQueryItem(name: "where", value: "{\"uniqueKey\":\"\(User.sharedUser().uniqueKey)\"}")
-        print(queryItemOne)
         
         urlComponents.queryItems?.append(queryItemOne)
         
-        print(urlComponents.url!)
-
         let request = NSMutableURLRequest(url: urlComponents.url!)
 
         
@@ -146,14 +142,12 @@ class ParseClient : NSObject {
     
         let task = self.session.dataTask(with: request as URLRequest) { data, response, error in
             
-            print("started task")
-            
             func errorHandler(_ error: String) {
                 print("there was an error: " + error)
             }
             
             guard (error == nil) else {
-                errorHandler(error as! String)
+                errorHandler(error.debugDescription)
                 return
             }
             

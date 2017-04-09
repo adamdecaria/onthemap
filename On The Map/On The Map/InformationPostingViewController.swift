@@ -64,34 +64,34 @@ class InformationPostingViewController : UIViewController, UITextFieldDelegate, 
             let userWebAddress = websiteTextField.text! as String
             User.sharedUser().webAddress = userWebAddress
             
-            mapView.isHidden = false
-            submitLocationButton.isHidden = false
-            findLocationButton.isHidden = true
-            enterLocationTextField.isHidden = true
-            websiteTextField.isHidden = true
-            
             let userLocation = CLGeocoder()
             
             userLocation.geocodeAddressString(enterLocationTextField.text!, completionHandler: { placemark, error in
                 
-                guard (error == nil) else {
+                if (error != nil) {
                     let errorMessage = UIAlertController.init(title: "Error", message: "Unable to find that location", preferredStyle: .alert)
                     let okAction = UIAlertAction(title: "OK", style: .default)
                     errorMessage.addAction(okAction)
                     self.present(errorMessage, animated: true)
-                    return
+                } else {
+                    
+                    self.mapView.isHidden = false
+                    self.submitLocationButton.isHidden = false
+                    self.findLocationButton.isHidden = true
+                    self.enterLocationTextField.isHidden = true
+                    self.websiteTextField.isHidden = true
+                    
+                    let locationData = placemark?[0].location
+                    User.sharedUser().latitude = (locationData?.coordinate.latitude)! as Double
+                    User.sharedUser().longitude = (locationData?.coordinate.longitude)! as Double
+                
+                    let annotation = MKPointAnnotation()
+                    annotation.coordinate = (locationData?.coordinate)!
+                
+                    self.mapView.addAnnotation(annotation)
+                    self.mapView.camera.centerCoordinate = (locationData?.coordinate)!
+                    self.mapView.camera.altitude = self.mapView.camera.altitude * 0.2
                 }
-                
-                let locationData = placemark?[0].location
-                User.sharedUser().latitude = (locationData?.coordinate.latitude)! as Double
-                User.sharedUser().longitude = (locationData?.coordinate.longitude)! as Double
-                
-                let annotation = MKPointAnnotation()
-                annotation.coordinate = (locationData?.coordinate)!
-                
-                self.mapView.addAnnotation(annotation)
-                self.mapView.camera.centerCoordinate = (locationData?.coordinate)!
-                self.mapView.camera.altitude = self.mapView.camera.altitude * 0.2
                 
             })
             
@@ -148,13 +148,19 @@ class InformationPostingViewController : UIViewController, UITextFieldDelegate, 
             
             StudentData.shareStudentData().studentArray.removeAll()
             
-            ParseClient.sharedInstance().taskForGETSession(completionHandler: { ParseClient.sharedInstance().taskForPOSTStudent(completionHandler: { self.dismiss(animated: true, completion: nil)})})
+            ParseClient.sharedInstance().taskForGETSession(completionHandler: {
+                ParseClient.sharedInstance().taskForPOSTStudent(completionHandler: { error in
+                    
+                    guard (error == nil) else {
+                        let errorMessage = UIAlertController.init(title: "Uhoh!", message: "Please check your network connection and try again.", preferredStyle: .alert)
+                        let okAction = UIAlertAction(title: "OK", style: .default)
+                        errorMessage.addAction(okAction)
+                        self.present(errorMessage, animated: true)
+                        return
+                    }
+                    
+                    self.dismiss(animated: true, completion: nil)})})
             
-            /*
-            ParseClient.sharedInstance().taskForGETSession(completionHandler: { _ in })
-            
-            ParseClient.sharedInstance().taskForPOSTStudent(completionHandler: { _ in self.dismiss(animated: true, completion: nil)})
-            */
             self.activityIndicator.stopAnimating()
         }
         
